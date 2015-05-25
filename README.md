@@ -17,13 +17,15 @@ From the NuGet package manager console: ```Install-Package SkyScanner```
 
 ```C#
 var scanner = new Scanner(ConfigurationManager.AppSettings["apiKey"]);
-var from = (await scanner.QueryLocation("London")).First();
-var to = (await scanner.QueryLocation("New York")).First();
+var fromPlace = (await scanner.QueryLocation("London")).First();
+var toPlace = (await scanner.QueryLocation("New York")).First();
 
 //Query flights
 var flightResponse = await scanner.QueryFlight(
   new FlightQuerySettings(
-    new FlightRequestSettings(from, to, new LocalDate(2015, 06, 19), new LocalDate(2015, 06, 25)),
+    new FlightRequestSettings(
+      fromPlace, toPlace, 
+      new LocalDate(2015, 06, 19), new LocalDate(2015, 06, 25)),
     new FlightResponseSettings(SortType.Price, SortOrder.Ascending)));
 
 var itinerary = flightResponse.Itineraries.First();
