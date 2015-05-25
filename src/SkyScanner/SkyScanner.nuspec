@@ -4,8 +4,8 @@
     <id>SkyScanner</id>
     <version>1.0.0</version>
     <title>SkyScanner API</title>
-    <authors>Tamas Vajk</authors>
-    <owners>SkyScanner</owners>
+    <authors>Tamas Vajk, SkyScanner</authors>
+    <owners>Tamas Vajk</owners>
     <licenseUrl>https://raw.githubusercontent.com/tamasvajk/SkyScanner/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/tamasvajk/SkyScanner</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/tamasvajk/SkyScanner/master/resources/icon-32.png</iconUrl>
@@ -14,7 +14,7 @@
       The Skyscanner API is composed of services that can be used either individually, to add travel search functionality to an existing product, or combined, to build a fully-fledged travel search product.
     </description>
     <copyright>Copyright (c) 2015 Tamas Vajk</copyright>
-    <tags></tags>
+    <tags>SkyScanner flight search API booking price</tags>
 	<frameworkAssemblies>
       <frameworkAssembly assemblyName="System" />
 	  <frameworkAssembly assemblyName="System.Core" />
