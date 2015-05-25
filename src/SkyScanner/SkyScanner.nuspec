@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SkyScanner</id>
+    <version>1.0.0</version>
+    <title>SkyScanner API</title>
+    <authors>Tamas Vajk</authors>
+    <owners>SkyScanner</owners>
+    <licenseUrl>https://raw.githubusercontent.com/tamasvajk/SkyScanner/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/tamasvajk/SkyScanner</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/tamasvajk/SkyScanner/master/resources/icon-32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      The Skyscanner API is composed of services that can be used either individually, to add travel search functionality to an existing product, or combined, to build a fully-fledged travel search product.
+    </description>
+    <copyright>Copyright (c) 2015 Tamas Vajk</copyright>
+    <tags></tags>
+	<frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" />
+	  <frameworkAssembly assemblyName="System.Core" />
+	  <frameworkAssembly assemblyName="System.Net.Http" />
+	  <frameworkAssembly assemblyName="System.Web" />
+	  <frameworkAssembly assemblyName="System.Xml" />
+    </frameworkAssemblies>
+	<dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.8" />
+	  <dependency id="NodaTime" version="1.3.1" />
+	  <dependency id="NodaTime.Serialization.JsonNet" version="1.3.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="SkyScanner.dll" target="lib" />
+  </files>
+</package>

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyScanner.Console", "src\SkyScanner.Console\SkyScanner.Console.csproj", "{33617A90-7B48-418C-87C5-3EED4DE82E39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyScanner", "src\SkyScanner\SkyScanner.csproj", "{2586EBB8-4835-4FAC-9850-E67C2D503C96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyScanner.Test", "src\SkyScanner.Test\SkyScanner.Test.csproj", "{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A4980AA7-71FD-46DB-AFE2-9AFA93FA55A8}"
+	ProjectSection(SolutionItems) = preProject
+		src\AssemblyInfo.Shared.cs = src\AssemblyInfo.Shared.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1A911934-D76E-479A-BDAE-FAED4F2D3333}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33617A90-7B48-418C-87C5-3EED4DE82E39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33617A90-7B48-418C-87C5-3EED4DE82E39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33617A90-7B48-418C-87C5-3EED4DE82E39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33617A90-7B48-418C-87C5-3EED4DE82E39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2586EBB8-4835-4FAC-9850-E67C2D503C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2586EBB8-4835-4FAC-9850-E67C2D503C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2586EBB8-4835-4FAC-9850-E67C2D503C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2586EBB8-4835-4FAC-9850-E67C2D503C96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD} = {1A911934-D76E-479A-BDAE-FAED4F2D3333}
+	EndGlobalSection
+EndGlobal
