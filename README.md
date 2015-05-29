@@ -21,14 +21,14 @@ var fromPlace = (await scanner.QueryLocation("London")).First();
 var toPlace = (await scanner.QueryLocation("New York")).First();
 
 //Query flights
-var flightResponse = await scanner.QueryFlight(
+var itineraries = await scanner.QueryFlight(
   new FlightQuerySettings(
     new FlightRequestSettings(
       fromPlace, toPlace, 
       new LocalDate(2015, 06, 19), new LocalDate(2015, 06, 25)),
     new FlightResponseSettings(SortType.Price, SortOrder.Ascending)));
 
-var itinerary = flightResponse.Itineraries.First();
+var itinerary = itineraries.First();
 var estimatedPrice = itinerary.PricingOptions.Min(option => option.Price);
 
 //Query booking
