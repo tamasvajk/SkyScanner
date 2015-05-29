@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>SkyScanner</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>SkyScanner API</title>
     <authors>Tamas Vajk, SkyScanner</authors>
     <owners>Tamas Vajk</owners>
