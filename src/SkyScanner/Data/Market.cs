@@ -2,12 +2,23 @@
 
 namespace SkyScanner.Data
 {
-    // http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/en-GB?apiKey=prtl6749387986743898559646983194
+    /// <summary>
+    /// Markets (countries) supported by Skyscanner
+    /// </summary>
     public class Market
     {
+        /// <summary>
+        /// Default market - United Kingdom
+        /// </summary>
         public static readonly Market Default = new Market {Code = "UK", Name = "United Kingdom"};
 
+        /// <summary>
+        /// Country code
+        /// </summary>
         public string Code { get; internal set; }
+        /// <summary>
+        /// Country name in the requested language
+        /// </summary>
         public string Name { get; internal set; }
 
         public override string ToString()

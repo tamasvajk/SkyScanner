@@ -6,10 +6,16 @@ using SkyScanner.Data.Base;
 
 namespace SkyScanner.Flight
 {
-    public class FlightResponse : IPingResponse, IContainerResponse
+    /// <summary>
+    /// Response for a Live Pricing Service query
+    /// </summary>
+    internal class FlightResponse : IPingResponse, IContainerResponse
     {
         internal ResponseStatus Status { get; set; }
         internal string SessionKey { get; set; }
+        /// <summary>
+        /// All the flights that can be booked for the selected airports, dates, and settings
+        /// </summary>
         public List<Itinerary> Itineraries { get; set; }
         internal List<Leg> Legs { get; set; }
         internal List<LegSegment> Segments { get; set; }

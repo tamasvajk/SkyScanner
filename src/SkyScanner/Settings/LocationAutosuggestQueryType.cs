@@ -2,9 +2,18 @@
 
 namespace SkyScanner.Settings
 {
+    /// <summary>
+    /// Query type for the location autosuggest service
+    /// </summary>
     public enum LocationAutosuggestQueryType
     {
+        /// <summary>
+        /// Query string based search
+        /// </summary>
         Query,
+        /// <summary>
+        /// ID based search
+        /// </summary>
         Id
     }
 }

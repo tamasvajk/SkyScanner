@@ -33,12 +33,12 @@ namespace SkyScanner.Console
             var to = (await scanner.QueryLocation("New York")).First();
 
             //Query flights
-            var flightResponse = await scanner.QueryFlight(
+            var itineraries = await scanner.QueryFlight(
                 new FlightQuerySettings(
                     new FlightRequestSettings(from, to, new LocalDate(2015, 06, 19), new LocalDate(2015, 06, 25)),
                     new FlightResponseSettings(SortType.Price, SortOrder.Ascending)));
 
-            var itineraries = flightResponse.Itineraries
+            itineraries = itineraries
                 .Take(5)
                 .ToList();
 
@@ -106,12 +106,10 @@ namespace SkyScanner.Console
                 currentCurrency = Currency.Default;
             }
             
-            var autosuggestSettings = new LocationAutosuggestSettings(
-                LocationAutosuggestQueryType.Query, currentMarket, currentCurrency, currentLocale);
-
             //Query location
             const string fromPlaceName = "London";
-            var from = (await scanner.QueryLocation(fromPlaceName, autosuggestSettings)).First();
+            var from = (await scanner.QueryLocation(new LocationAutosuggestSettings(fromPlaceName,
+                LocationAutosuggestQueryType.Query, currentMarket, currentCurrency, currentLocale))).First();
             if (from == null)
             {
                 WriteErrorLine("Couldn't find '{0}'", fromPlaceName);
@@ -120,7 +118,8 @@ namespace SkyScanner.Console
 
             //Query destination location
             const string toPlaceName = "New York";
-            var to = (await scanner.QueryLocation(toPlaceName, autosuggestSettings)).FirstOrDefault();
+            var to = (await scanner.QueryLocation(new LocationAutosuggestSettings(toPlaceName,
+                LocationAutosuggestQueryType.Query, currentMarket, currentCurrency, currentLocale))).FirstOrDefault();
             if (to == null)
             {
                 WriteErrorLine("Couldn't find '{0}'", toPlaceName);
@@ -152,13 +151,13 @@ namespace SkyScanner.Console
             WriteImportantLine(inboundDate.ToString("d", CultureInfo.InvariantCulture));
             
             //Query flights
-            var flightResponse = await scanner.QueryFlight(
+            var itineraries = await scanner.QueryFlight(
                 new FlightQuerySettings(
                     new FlightRequestSettings(from, to, outboundDate, inboundDate, 1,
                         currency: currentCurrency, marketCountry: currentMarket, locale: currentLocale),
                     flightResponseSettings));
 
-            var itineraries = flightResponse.Itineraries
+            itineraries = itineraries
                 .Take(5)
                 .ToList();
 

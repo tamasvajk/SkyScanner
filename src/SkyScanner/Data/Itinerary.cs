@@ -10,6 +10,9 @@ namespace SkyScanner.Data
     {
         internal string OutboundLegId { get; set; }
         internal string InboundLegId { get; set; }
+        /// <summary>
+        /// Pricing options with agent(s), the quote age, price and deeplink URL (the absolute URL needed to make the booking).
+        /// </summary>
         public List<PricingOption> PricingOptions { get; internal set; }
         private Flight.FlightResponse _flightResponse;
         [JsonIgnore]

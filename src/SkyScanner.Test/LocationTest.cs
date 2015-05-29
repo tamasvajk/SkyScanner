@@ -19,7 +19,7 @@ namespace SkyScanner.Test
         [TestMethod]
         public async Task Locations_Can_Be_Queried()
         {
-            var locations = await Scanner.QueryLocation("London", new LocationAutosuggestSettings());
+            var locations = await Scanner.QueryLocation(new LocationAutosuggestSettings("London"));
             Assert.IsNotNull(locations);
             Assert.AreNotEqual(0, locations.Count);
         }
@@ -28,26 +28,26 @@ namespace SkyScanner.Test
         public async Task Locations_Can_Be_Queried_With_Different_Settings()
         {
             var locales = await Scanner.QueryLocale();
-            var locationsEng = await Scanner.QueryLocation("London", new LocationAutosuggestSettings(
+            var locationsEng = await Scanner.QueryLocation(new LocationAutosuggestSettings("London", 
                 LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "en-GB")));
-            
-            var locationsFr = await Scanner.QueryLocation("London", new LocationAutosuggestSettings(
+
+            var locationsFr = await Scanner.QueryLocation(new LocationAutosuggestSettings("London", 
                 LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(locationsEng.Count, locationsFr.Count);
 
-            var locationsHeathrow = await Scanner.QueryLocation("LHR-sky", new LocationAutosuggestSettings(
+            var locationsHeathrow = await Scanner.QueryLocation(new LocationAutosuggestSettings("LHR-sky", 
                 LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(1, locationsHeathrow.Count);
 
-            var ipBased = await Scanner.QueryLocation("212.58.244.18-IP", new LocationAutosuggestSettings(
+            var ipBased = await Scanner.QueryLocation(new LocationAutosuggestSettings("212.58.244.18-IP", 
                 LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(1, ipBased.Count);
             Assert.AreEqual("LOND-sky", ipBased.First().PlaceId);
 
-            var info = await Scanner.QueryLocation("LOND-sky", new LocationAutosuggestSettings(
+            var info = await Scanner.QueryLocation(new LocationAutosuggestSettings("LOND-sky", 
                 LocationAutosuggestQueryType.Id, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(1, info.Count);

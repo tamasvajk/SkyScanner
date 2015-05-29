@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2015 Tamas Vajk. All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,15 +26,14 @@ namespace SkyScanner.Test
         {
             var departureDate = Instant.FromDateTimeUtc(DateTime.UtcNow).InUtc().Date.PlusMonths(1);
 
-            var flightResponse = await Scanner.QueryFlight(new FlightQuerySettings(
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
                     Location.FromString("LOND-sky"),
                     Location.FromString("NYCA-sky"),
                     departureDate, departureDate.PlusDays(5)),
                 new FlightResponseSettings()));
 
-            Assert.IsNotNull(flightResponse);
-            Assert.AreNotEqual(0, flightResponse.Itineraries.Count);
+            Assert.AreNotEqual(0, itineraries.Count);
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace SkyScanner.Test
             const int maxStops = 2;
             const int maxDuration = 14 * 60;
 
-            var flightResponse = await Scanner.QueryFlight(new FlightQuerySettings(
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
                     Location.FromString("GVA-sky"),
                     Location.FromString("JFK-sky"),
@@ -58,9 +58,9 @@ namespace SkyScanner.Test
                     outboundDepartureStartTime: outboundDepartureStartTime,
                     outboundDepartureEndTime: outboundDepartureEndTime)));
 
-            Assert.IsTrue(flightResponse.Itineraries.Count > 0);
+            Assert.IsTrue(itineraries.Count > 0);
 
-            foreach (var itinerary in flightResponse.Itineraries)
+            foreach (var itinerary in itineraries)
             {
                 Assert.IsNull(itinerary.InboundLeg);
             }
@@ -73,7 +73,7 @@ namespace SkyScanner.Test
             const int maxStops = 2;
             const int maxDuration = 18 * 60;
 
-            var flightResponse = await Scanner.QueryFlight(new FlightQuerySettings(
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
                     Location.FromString("GVA-sky"),
                     Location.FromString("LAX-sky"),
@@ -85,9 +85,9 @@ namespace SkyScanner.Test
                     maxDuration: maxDuration,
                     outboundDepartureTime: DayTimePeriod.Afternoon | DayTimePeriod.Evening)));
 
-            Assert.IsTrue(flightResponse.Itineraries.Count > 0);
+            Assert.IsTrue(itineraries.Count > 0);
 
-            foreach (var itinerary in flightResponse.Itineraries)
+            foreach (var itinerary in itineraries)
             {
                 Assert.IsNull(itinerary.InboundLeg);
                 Assert.IsTrue(itinerary.OutboundLeg.DepartureTime.TimeOfDay >= new LocalTime(12, 0));
@@ -103,7 +103,7 @@ namespace SkyScanner.Test
             const int maxStops = 2;
             const int maxDuration = 14 * 60;
 
-            var flightResponse = await Scanner.QueryFlight(new FlightQuerySettings(
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
                     Location.FromString("GVA-sky"),
                     Location.FromString("212.58.244.18"),
@@ -116,7 +116,7 @@ namespace SkyScanner.Test
                     outboundDepartureStartTime: outboundDepartureStartTime,
                     outboundDepartureEndTime: outboundDepartureEndTime)));
 
-            foreach (var itinerary in flightResponse.Itineraries)
+            foreach (var itinerary in itineraries)
             {
                 Assert.IsNull(itinerary.InboundLeg);
             }
@@ -138,7 +138,7 @@ namespace SkyScanner.Test
             const int maxStops = 2;
             const int maxDuration = 22 * 60;
 
-            var flightResponse = await Scanner.QueryFlight(new FlightQuerySettings(
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
                     Location.FromString(startCode),
                     Location.FromString(endCode),
@@ -154,9 +154,9 @@ namespace SkyScanner.Test
                     inboundDepartureStartTime: inboundDepartureStartTime,
                     inboundDepartureEndTime: inboundDepartureEndTime)));
 
-            Assert.IsTrue(flightResponse.Itineraries.Count > 0);
+            Assert.IsTrue(itineraries.Count > 0);
 
-            foreach (var itinerary in flightResponse.Itineraries)
+            foreach (var itinerary in itineraries)
             {
                 Func<string, string> cleanCode = s => s.Replace("-sky", "");
 
@@ -197,13 +197,13 @@ namespace SkyScanner.Test
                 }
             }
 
-            CheckDescendingPriceOrdering(flightResponse);
+            CheckDescendingPriceOrdering(itineraries);
         }
 
-        private static void CheckDescendingPriceOrdering(FlightResponse flightResponse)
+        private static void CheckDescendingPriceOrdering(IEnumerable<Itinerary> itineraries)
         {
             decimal? previousPrice = null;
-            foreach (var itinerary in flightResponse.Itineraries)
+            foreach (var itinerary in itineraries)
             {
                 var price = itinerary.PricingOptions.Select(option => option.Price).Min();
 
@@ -257,7 +257,7 @@ namespace SkyScanner.Test
                     Assert.IsNotNull(flightInfo.Carrier);
                 }
 
-                Assert.IsNotNull(segment.Carrier);
+                Assert.IsNotNull(segment.Flight.Carrier);
             }
         }
     }

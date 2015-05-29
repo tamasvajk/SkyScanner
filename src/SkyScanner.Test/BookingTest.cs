@@ -23,14 +23,14 @@ namespace SkyScanner.Test
         {
             var departureDate = Instant.FromDateTimeUtc(DateTime.UtcNow).InUtc().Date.PlusMonths(1);
 
-            var flightResponse = await Scanner.QueryFlight(new FlightQuerySettings(
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
                     Data.Location.FromString("MAD-sky"),
                     Data.Location.FromString("WASA-sky"),
                     departureDate, departureDate.PlusDays(5)),
                 new FlightResponseSettings()));
 
-            var itinerary = flightResponse.Itineraries.First();
+            var itinerary = itineraries.First();
 
             var bookingResponse = await Scanner.QueryBooking(itinerary);
 
@@ -42,10 +42,9 @@ namespace SkyScanner.Test
             Assert.AreNotEqual(0, firstBookingItem.Segments.Count);
 
             var firstSegment = firstBookingItem.Segments.First();
-            Assert.IsNotNull(firstSegment.Carrier);
-            Assert.IsFalse(string.IsNullOrEmpty(firstSegment.Carrier.Name));
+            Assert.IsNotNull(firstSegment.Flight.Carrier);
+            Assert.IsFalse(string.IsNullOrEmpty(firstSegment.Flight.Carrier.Name));
             Assert.AreEqual(bookingResponse.Itinerary.OutboundLeg.Origin.Code, firstSegment.Origin.Code);
-            Assert.AreEqual(firstSegment.Carrier.Code, firstSegment.Flight.Carrier.Code);
         }        
     }
 }

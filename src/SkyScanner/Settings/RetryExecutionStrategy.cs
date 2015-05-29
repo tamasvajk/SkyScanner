@@ -9,26 +9,33 @@ using SkyScanner.Services.Base;
 namespace SkyScanner.Settings
 {
     /// <summary>
-    /// todo add comments
+    /// Execution strategy with retry mechanism
     /// </summary>
     public class RetryExecutionStrategy : IExecutionStrategy
     {
+        /// <summary>
+        /// An initialized RetryExecutionStrategy with 1 second retry delay, and 2 retries on 
+        /// unexpected exceptions
+        /// </summary>
         public static RetryExecutionStrategy Default = new RetryExecutionStrategy(Duration.FromSeconds(1));
 
-        private readonly int _retryCountOnGenericException;
-        private readonly int _retryCountOnExpectedException;
+        private readonly int _retryCountOnException;
         private readonly Duration _retryInterval;
 
-        public RetryExecutionStrategy(Duration retryInterval, int retryCountOnExpectedException = 1, int retryCountOnGenericException = 2)
+        /// <summary>
+        /// Initializes a new instance of the RetryExecutionStrategy with the specified parameters
+        /// </summary>
+        /// <param name="retryInterval">The duration to wait after a failed execution</param>
+        /// <param name="retryCountOnException">The number of retries upon unexpected exceptions.</param>
+        public RetryExecutionStrategy(Duration retryInterval, int retryCountOnException = 2)
         {
             _retryInterval = retryInterval;
-            _retryCountOnExpectedException = retryCountOnExpectedException;
-            _retryCountOnGenericException = retryCountOnGenericException;
+            _retryCountOnException = retryCountOnException;
         }
 
         public async Task<T> Execute<T>(Func<Task<T>> func)
         {
-            return await Retry.Do<T, RetryRequestException>(func, _retryInterval, _retryCountOnExpectedException, _retryCountOnGenericException);
+            return await Retry.Do<T, System.Exception>(func, _retryInterval, _retryCountOnException);
         }
     }
 }

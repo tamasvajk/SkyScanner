@@ -8,12 +8,6 @@ namespace SkyScanner.Services.Base
 {
     internal class Retry
     {
-        public static Task<T> Do<T, TExpectedException>(Func<Task<T>> func, Duration retryInterval)
-            where TExpectedException : Exception
-        {
-            return Do<T, TExpectedException>(func, retryInterval, -1, 0);
-        }
-
         /// <summary>
         /// Retries an function several times until a certain number of expected and unexpected exceptions occurred or the result could be retrieved
         /// </summary>
@@ -25,7 +19,7 @@ namespace SkyScanner.Services.Base
         /// <param name="retryCountOnGenericException">Number of retries upon unexpected exceptions</param>
         /// <returns>Result of the function</returns>
         public static async Task<T> Do<T, TExpectedException>(Func<Task<T>> func, Duration retryInterval, 
-            int retryCountOnExpectedException, int retryCountOnGenericException) 
+            int retryCountOnExpectedException = -1, int retryCountOnGenericException = 0) 
             where TExpectedException : Exception
         {
             Exception lastException = null;

@@ -15,6 +15,9 @@ namespace SkyScanner.Data
         public NodaTime.LocalDateTime DepartureTime { get; internal set; }
         [JsonProperty("ArrivalDateTime")]
         public NodaTime.LocalDateTime ArrivalTime { get; internal set; }
+        /// <summary>
+        /// The duration in minutes
+        /// </summary>
         public int Duration { get; internal set; }
         public JourneyMode JourneyMode { get; internal set; }
         public Directionality Directionality { get; internal set; }
@@ -42,11 +45,6 @@ namespace SkyScanner.Data
         public Place Destination
         {
             get { return ContainerResponse.Places.FirstOrDefault(place => place.Id == DestinationStation); }
-        }
-        [JsonIgnore]
-        public Carrier Carrier
-        {
-            get { return ContainerResponse.Carriers.FirstOrDefault(carrier => carrier.Id == CarrierId); }
         }
     }
 }

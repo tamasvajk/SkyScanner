@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace SkyScanner.Settings
 {
+    /// <summary>
+    /// Default execution strategy, to simply execute a function
+    /// </summary>
     public class DefaultExecutionStrategy : IExecutionStrategy
     {
-        //public async Task<T> Execute<T, TException>(Func<Task<T>> func) where TException : Exceptions.Exception
-        //{
-        //    return await func();
-        //}
-
         public async Task<T> Execute<T>(Func<Task<T>> func)
         {
             return await func();

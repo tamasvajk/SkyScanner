@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace SkyScanner.Data
 {
+    /// <summary>
+    /// A Booking Option is a complete option to book an itinerary. It is made up of Booking Items
+    /// </summary>
     public class BookingOption
     {
         public List<BookingItem> BookingItems { get; internal set; }

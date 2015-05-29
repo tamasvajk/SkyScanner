@@ -4,11 +4,19 @@ using System;
 
 namespace SkyScanner.Settings
 {
+    /// <summary>
+    /// Settings for the flight query
+    /// </summary>
     public class FlightQuerySettings
     {
         private readonly FlightRequestSettings _requestSettings;
         private readonly FlightResponseSettings _responseSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the FlightQuerySettings with the specified parameters
+        /// </summary>
+        /// <param name="requestSettings"></param>
+        /// <param name="responseSettings"></param>
         public FlightQuerySettings(FlightRequestSettings requestSettings, FlightResponseSettings responseSettings)
         {
             if (requestSettings == null)
