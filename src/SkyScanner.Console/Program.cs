@@ -13,7 +13,6 @@ using SkyScanner.Settings;
 
 namespace SkyScanner.Console
 {
-    using Console = System.Console;
     class Program
     {
         static void Main()
@@ -231,10 +230,10 @@ namespace SkyScanner.Console
         
         private static void Write(ConsoleColor color, string format, params object[] arg)
         {
-            var prevConsoleColor = Console.ForegroundColor;
-            Console.ForegroundColor = color;
+            var prevConsoleColor = System.Console.ForegroundColor;
+            System.Console.ForegroundColor = color;
             Write(format, arg);
-            Console.ForegroundColor = prevConsoleColor;
+            System.Console.ForegroundColor = prevConsoleColor;
         }
         private static void WriteLine(ConsoleColor color, string format, params object[] arg)
         {
@@ -247,7 +246,7 @@ namespace SkyScanner.Console
         private static void Write(string format, params object[] arg)
         {
             //write to Console for the time being
-            Console.Write(format, arg);
+            System.Console.Write(format, arg);
         }
 
         private static void WriteSeparator(int number = 1)

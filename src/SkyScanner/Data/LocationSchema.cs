@@ -33,6 +33,6 @@ namespace SkyScanner.Data
         /// </summary>
         Ip,
 
-        Default,
+        Default
     }
 }

@@ -6,6 +6,6 @@ namespace SkyScanner.Data
     {
         Airport,
         City,
-        Country,
+        Country
     }
 }

@@ -205,7 +205,6 @@ namespace SkyScanner.Test
             foreach (var itinerary in itineraries)
             {
                 var price = itinerary.PricingOptions.Select(option => option.Price).Min();
-
                 if (previousPrice.HasValue)
                 {
                     Assert.IsTrue(Math.Floor(price) - Math.Floor(previousPrice.Value) <= 1);
