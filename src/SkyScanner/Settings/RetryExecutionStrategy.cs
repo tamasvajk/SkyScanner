@@ -3,7 +3,6 @@
 using System;
 using System.Threading.Tasks;
 using NodaTime;
-using SkyScanner.Exceptions;
 using SkyScanner.Services.Base;
 
 namespace SkyScanner.Settings
@@ -35,7 +34,7 @@ namespace SkyScanner.Settings
 
         public async Task<T> Execute<T>(Func<Task<T>> func)
         {
-            return await Retry.Do<T, System.Exception>(func, _retryInterval, _retryCountOnException);
+            return await Retry.Do<T, Exception>(func, _retryInterval, _retryCountOnException);
         }
     }
 }

@@ -13,20 +13,6 @@ namespace SkyScanner.Settings
     /// </summary>
     public class FlightRequestSettings : RequestSettings
     {
-        private readonly Locale _locale;
-        private readonly Currency _currency;
-        private readonly Market _marketCountry;
-        private readonly CabinClass _cabinClass;
-        private readonly bool _groupPricing;
-        private readonly int _infants;
-        private readonly int _children;
-        private readonly int _adults;
-        private readonly LocalDate? _inboundDate;
-        private readonly LocalDate _outboundDate;
-        private readonly Location _destination;
-        private readonly Location _origin;
-        private readonly LocationSchema _locationSchema;
-
         /// <summary>
         /// Initializes a new instance of the FlightRequestSettings with the specified parameters
         /// </summary>
@@ -51,159 +37,105 @@ namespace SkyScanner.Settings
         {
             if (origin == null)
             {
-                throw new ArgumentNullException("origin");
+                throw new ArgumentNullException(nameof(origin));
             }
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
             if (origin.PlaceId == destination.PlaceId)
             {
-                throw new ArgumentException("Origin and destination are the same", "destination");
+                throw new ArgumentException("Origin and destination are the same", nameof(destination));
             }
 
             if (inboundDate.HasValue && inboundDate.Value < outboundDate)
             {
-                throw new ArgumentException("Return flight cannot be earlier than the outbound flight", "outboundDate");
+                throw new ArgumentException("Return flight cannot be earlier than the outbound flight", nameof(outboundDate));
             }
 
             if (adults < 0 || adults > 8)
             {
-                throw new ArgumentException("The number of adults traveling must be between 0 and 8", "adults");
+                throw new ArgumentException("The number of adults traveling must be between 0 and 8", nameof(adults));
             }
 
             if (children < 0 || children > 8)
             {
-                throw new ArgumentException("The number of children traveling must be between 0 and 8", "children");
+                throw new ArgumentException("The number of children traveling must be between 0 and 8", nameof(children));
             }
 
             if (infants < 0 || infants > adults)
             {
-                throw new ArgumentException("The number of infants traveling must be between 0 and the number of adults", "infants");
+                throw new ArgumentException("The number of infants traveling must be between 0 and the number of adults", nameof(infants));
             }
 
             if (adults == 0 && children == 0)
             {
-                throw new ArgumentException("Can't search for 0 person", "adults");
+                throw new ArgumentException("Can't search for 0 person", nameof(adults));
 
             }
 
-            _origin = origin;
-            _destination = destination;
-            _outboundDate = outboundDate;
+            Origin = origin;
+            Destination = destination;
+            OutboundDate = outboundDate;
 
-            _inboundDate = inboundDate;
+            InboundDate = inboundDate;
 
-            _adults = adults;
-            _children = children;
-            _infants = infants;
+            Adults = adults;
+            Children = children;
+            Infants = infants;
 
-            _groupPricing = groupPricing;
-            _cabinClass = cabinClass;
+            GroupPricing = groupPricing;
+            CabinClass = cabinClass;
 
-            _marketCountry = marketCountry ?? Market.Default;
-            _currency = currency ?? Currency.Default;
-            _locale = locale ?? Locale.Default;
+            MarketCountry = marketCountry ?? Market.Default;
+            Currency = currency ?? Currency.Default;
+            Locale = locale ?? Locale.Default;
 
-            _locationSchema = locationSchema;
+            LocationSchema = locationSchema;
         }
 
-        internal string Country
-        {
-            get { return MarketCountry.ToString(); }
-        }
+        internal string Country => MarketCountry.ToString();
 
         [JsonIgnore]
-        public Market MarketCountry
-        {
-            get { return _marketCountry; }
-        }
+        public Market MarketCountry { get; }
 
         [JsonProperty("Currency")]
-        internal string CurrencyText
-        {
-            get { return Currency.ToString(); }
-        }
+        internal string CurrencyText => Currency.ToString();
 
         [JsonIgnore]
-        public Currency Currency
-        {
-            get { return _currency; }
-        }
+        public Currency Currency { get; }
 
         [JsonProperty("Locale")]
-        internal string LocaleText
-        {
-            get { return Locale.ToString(); }
-        }
+        internal string LocaleText => Locale.ToString();
 
         [JsonIgnore]
-        public Locale Locale
-        {
-            get { return _locale; }
-        }
+        public Locale Locale { get; }
 
-        internal LocationSchema LocationSchema
-        {
-            get { return _locationSchema; }
-        }
+        internal LocationSchema LocationSchema { get; }
 
-        internal string OriginPlace
-        {
-            get { return Origin.ToString(); }
-        }
+        internal string OriginPlace => Origin.ToString();
 
         [JsonIgnore]
-        public Location Origin
-        {
-            get { return _origin; }
-        }
+        public Location Origin { get; }
 
-        internal string DestinationPlace
-        {
-            get { return Destination.ToString(); }
-        }
+        internal string DestinationPlace => Destination.ToString();
 
         [JsonIgnore]
-        public Location Destination
-        {
-            get { return _destination; }
-        }
+        public Location Destination { get; }
 
-        public LocalDate OutboundDate
-        {
-            get { return _outboundDate; }
-        }
+        public LocalDate OutboundDate { get; }
 
-        public LocalDate? InboundDate
-        {
-            get { return _inboundDate; }
-        }
+        public LocalDate? InboundDate { get; }
 
-        public CabinClass CabinClass
-        {
-            get { return _cabinClass; }
-        }
+        public CabinClass CabinClass { get; }
 
-        public int Adults
-        {
-            get { return _adults; }
-        }
+        public int Adults { get; }
 
-        public int Children
-        {
-            get { return _children; }
-        }
+        public int Children { get; }
 
-        public int Infants
-        {
-            get { return _infants; }
-        }
+        public int Infants { get; }
 
-        public bool GroupPricing
-        {
-            get { return _groupPricing; }
-        }
+        public bool GroupPricing { get; }
     }
 }

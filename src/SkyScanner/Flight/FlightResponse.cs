@@ -23,24 +23,9 @@ namespace SkyScanner.Flight
         internal List<Agent> Agents { get; set; }
         internal List<Place> Places { get; set; }
         internal List<Currency> Currencies { get; set; }
-        bool IPingResponse.Succeeded
-        {
-            get { return Status == ResponseStatus.UpdatesComplete; }
-        }
-
-        List<Place> IContainerResponse.Places
-        {
-            get { return Places; }
-        }
-
-        List<LegSegment> IContainerResponse.Segments
-        {
-            get { return Segments; }
-        }
-        
-        List<Carrier> IContainerResponse.Carriers
-        {
-            get { return Carriers; }
-        }
+        bool IPingResponse.Succeeded => Status == ResponseStatus.UpdatesComplete;
+        List<Place> IContainerResponse.Places => Places;
+        List<LegSegment> IContainerResponse.Segments => Segments;
+        List<Carrier> IContainerResponse.Carriers => Carriers;
     }
 }

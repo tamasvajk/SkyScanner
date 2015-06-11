@@ -9,9 +9,6 @@ namespace SkyScanner.Settings
     /// </summary>
     public class FlightQuerySettings
     {
-        private readonly FlightRequestSettings _requestSettings;
-        private readonly FlightResponseSettings _responseSettings;
-
         /// <summary>
         /// Initializes a new instance of the FlightQuerySettings with the specified parameters
         /// </summary>
@@ -21,11 +18,11 @@ namespace SkyScanner.Settings
         {
             if (requestSettings == null)
             {
-                throw new ArgumentNullException("requestSettings");
+                throw new ArgumentNullException(nameof(requestSettings));
             }
             if (responseSettings == null)
             {
-                throw new ArgumentNullException("responseSettings");
+                throw new ArgumentNullException(nameof(responseSettings));
             }
 
             if (!requestSettings.InboundDate.HasValue &&
@@ -36,18 +33,12 @@ namespace SkyScanner.Settings
                 throw new ArgumentException("A one-way flight is queried, but response settings assume a return flight");
             }
 
-            _requestSettings = requestSettings;
-            _responseSettings = responseSettings;
+            FlightRequest = requestSettings;
+            FlightResponse = responseSettings;
         }
         
-        public FlightRequestSettings FlightRequest
-        {
-            get { return _requestSettings; }
-        }
+        public FlightRequestSettings FlightRequest { get; }
 
-        public FlightResponseSettings FlightResponse
-        {
-            get { return _responseSettings; }
-        }
+        public FlightResponseSettings FlightResponse { get; }
     }
 }

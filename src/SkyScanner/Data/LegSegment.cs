@@ -21,16 +21,15 @@ namespace SkyScanner.Data
         public int Duration { get; internal set; }
         public JourneyMode JourneyMode { get; internal set; }
         public Directionality Directionality { get; internal set; }
+
         [JsonIgnore]
-        public FlightInfo Flight
+        public FlightInfo Flight => new FlightInfo
         {
-            get { return new FlightInfo
-            {
-                CarrierId = CarrierId, 
-                FlightNumber = FlightNumber,
-                ContainerResponse = ContainerResponse
-            }; }
-        }
+            CarrierId = CarrierId,
+            FlightNumber = FlightNumber,
+            ContainerResponse = ContainerResponse
+        };
+
         internal int FlightNumber { get; set; }
         [JsonProperty("Carrier")]
         internal int CarrierId { get; set; }

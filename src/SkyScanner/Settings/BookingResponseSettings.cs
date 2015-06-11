@@ -9,36 +9,22 @@ namespace SkyScanner.Settings
 {
     internal class BookingResponseSettings : PingResponseSettings
     {
-        private readonly FlightResponse _flightResponse;
-        private readonly CarrierSchema _carrierSchema;
-        private readonly LocationSchema _locationSchema;
-        private readonly Itinerary _itinerary;
-        
         public BookingResponseSettings(Itinerary itinerary, CarrierSchema carrierSchema = CarrierSchema.Iata, LocationSchema locationSchema = LocationSchema.Iata)
         {
-            _flightResponse = itinerary.FlightResponse;
-            _carrierSchema = carrierSchema;
-            _locationSchema = locationSchema;
-            _itinerary = itinerary;
+            FlightResponse = itinerary.FlightResponse;
+            CarrierSchema = carrierSchema;
+            LocationSchema = locationSchema;
+            Itinerary = itinerary;
         }
 
-        public LocationSchema LocationSchema {
-            get { return _locationSchema; }
-        }
-        internal CarrierSchema CarrierSchema {
-            get { return _carrierSchema; }
-        }
+        public LocationSchema LocationSchema { get; }
+
+        internal CarrierSchema CarrierSchema { get; }
 
         [JsonIgnore]
-        internal FlightResponse FlightResponse
-        {
-            get { return _flightResponse; }
-        }
+        internal FlightResponse FlightResponse { get; }
 
         [JsonIgnore]
-        internal Itinerary Itinerary
-        {
-            get { return _itinerary; }
-        }
+        internal Itinerary Itinerary { get; }
     }
 }

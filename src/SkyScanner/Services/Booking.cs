@@ -25,8 +25,7 @@ namespace SkyScanner.Services
             {
                 return client =>
                     client.PutAsync(
-                        string.Format("http://partners.api.skyscanner.net/apiservices/pricing/v1.0/{0}/booking",
-                            _querySettings.BookingRequest.SessionKey), GetFormContent());
+                        $"http://partners.api.skyscanner.net/apiservices/pricing/v1.0/{_querySettings.BookingRequest.SessionKey}/booking", GetFormContent());
             }
         }
 

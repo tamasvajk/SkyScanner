@@ -22,7 +22,7 @@ namespace SkyScanner.Flight
 
         protected override Func<HttpClient, Task<HttpResponseMessage>> HttpMethod
         {
-            get { return client => client.GetAsync(string.Format("{0}?{1}", _location.AbsoluteUri, _querySettings)); }
+            get { return client => client.GetAsync($"{_location.AbsoluteUri}?{_querySettings}"); }
         }
         
         protected override void PostProcess(FlightResponse response)

@@ -20,9 +20,7 @@ namespace SkyScanner.Services
             get
             {
                 return client => client.GetAsync(
-                    string.Format(
-                        "http://partners.api.skyscanner.net/apiservices/reference/v1.0/currencies?apiKey={0}",
-                        ApiKey));
+                    $"http://partners.api.skyscanner.net/apiservices/reference/v1.0/currencies?apiKey={ApiKey}");
             }
         }
 

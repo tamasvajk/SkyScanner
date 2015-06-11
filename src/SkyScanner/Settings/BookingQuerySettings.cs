@@ -6,23 +6,14 @@ namespace SkyScanner.Settings
 {
     internal class BookingQuerySettings
     {
-        private readonly BookingRequestSettings _requestSettings;
-        private readonly BookingResponseSettings _responseSettings;
-
         public BookingQuerySettings(BookingRequestSettings requestSettings, Itinerary itinerary)
         {
-            _requestSettings = requestSettings;
-            _responseSettings = new BookingResponseSettings(itinerary);
+            BookingRequest = requestSettings;
+            BookingResponse = new BookingResponseSettings(itinerary);
         }
 
-        public BookingRequestSettings BookingRequest
-        {
-            get { return _requestSettings; }
-        }
+        public BookingRequestSettings BookingRequest { get; }
 
-        public BookingResponseSettings BookingResponse
-        {
-            get { return _responseSettings; }
-        }
+        public BookingResponseSettings BookingResponse { get; }
     }
 }

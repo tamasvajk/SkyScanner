@@ -10,12 +10,6 @@ namespace SkyScanner.Settings
     /// </summary>
     public class LocationAutosuggestSettings
     {
-        private readonly Market _market;
-        private readonly Currency _currency;
-        private readonly Locale _locale;
-        private readonly LocationAutosuggestQueryType _queryType;
-        private readonly string _query;
-
         /// <summary>
         /// Initializes a new instance of the LocationAutosuggestSettings with default values
         /// </summary>
@@ -37,47 +31,39 @@ namespace SkyScanner.Settings
         {
             if (market == null)
             {
-                throw new ArgumentNullException("market");
+                throw new ArgumentNullException(nameof(market));
             }
             if (currency == null)
             {
-                throw new ArgumentNullException("currency");
+                throw new ArgumentNullException(nameof(currency));
             }
             if (locale == null)
             {
-                throw new ArgumentNullException("locale");
+                throw new ArgumentNullException(nameof(locale));
             }
             if (query == null)
             {
-                throw new ArgumentNullException("query");
+                throw new ArgumentNullException(nameof(query));
             }
             if (query.Length < 2)
             {
-                throw new ArgumentException("The query string has to be at least two characters long", "query");
+                throw new ArgumentException("The query string has to be at least two characters long", nameof(query));
             }
 
-            _query = query;
-            _queryType = queryType;
-            _market = market;
-            _currency = currency;
-            _locale = locale;
+            Query = query;
+            QueryType = queryType;
+            Market = market;
+            Currency = currency;
+            Locale = locale;
         }
-        public string Query
-        {
-            get { return _query; }
-        }
-        public Market Market {
-            get { return _market; }
-        }
-        public Currency Currency {
-            get { return _currency; }
-        }
-        public Locale Locale {
-            get { return _locale; }
-        }
-        public LocationAutosuggestQueryType QueryType
-        {
-            get { return _queryType; }
-        }
+        public string Query { get; }
+
+        public Market Market { get; }
+
+        public Currency Currency { get; }
+
+        public Locale Locale { get; }
+
+        public LocationAutosuggestQueryType QueryType { get; }
     }
 }

@@ -22,10 +22,7 @@ namespace SkyScanner.Services.Base
             ApiKey = apiKey;
         }
 
-        protected virtual Duration RetryTimeSpan
-        {
-            get { return Duration.FromSeconds(1); }
-        }
+        protected virtual Duration RetryTimeSpan => Duration.FromSeconds(1);
 
         public async Task<TResponse> SendQuery()
         {
@@ -58,7 +55,8 @@ namespace SkyScanner.Services.Base
                     {
                         throw new RetryRequestException();
                     }
-                    throw new NotSupportedException(string.Format("Status code {0} returned by the server is not supported", (int)httpResponseMessage.StatusCode));
+                    throw new NotSupportedException(
+                        $"Status code {(int) httpResponseMessage.StatusCode} returned by the server is not supported");
             }
         }
     }

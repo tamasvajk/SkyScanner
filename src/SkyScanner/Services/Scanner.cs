@@ -10,7 +10,6 @@ using NodaTime.Serialization.JsonNet;
 using NodaTime.Text;
 using SkyScanner.Booking;
 using SkyScanner.Data;
-using SkyScanner.Flight;
 using SkyScanner.Services.Base;
 using SkyScanner.Services.Helpers;
 using SkyScanner.Settings;

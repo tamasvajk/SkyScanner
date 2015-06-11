@@ -23,9 +23,7 @@ namespace SkyScanner.Services
             get
             {
                 return client => client.GetAsync(
-                    string.Format(
-                        "http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/{0}?apiKey={1}",
-                        _locale, ApiKey));
+                    $"http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/{_locale}?apiKey={ApiKey}");
             }
         }
 

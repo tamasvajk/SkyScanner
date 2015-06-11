@@ -28,20 +28,12 @@ namespace SkyScanner.Booking
         internal List<Carrier> Carriers { get; set; }
         internal List<Place> Places { get; set; }
         
-        List<Place> IContainerResponse.Places
-        {
-            get { return Places; }
-        }
+        List<Place> IContainerResponse.Places => Places;
 
-        List<LegSegment> IContainerResponse.Segments
-        {
-            get { return Segments; }
-        }
-        
-        List<Carrier> IContainerResponse.Carriers
-        {
-            get { return Carriers; }
-        }
+        List<LegSegment> IContainerResponse.Segments => Segments;
+
+        List<Carrier> IContainerResponse.Carriers => Carriers;
+
         [JsonIgnore]
         bool IPingResponse.Succeeded
         {

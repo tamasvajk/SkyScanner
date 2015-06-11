@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using SkyScanner.Data;
-using SkyScanner.Flight;
 using SkyScanner.Settings;
 
 namespace SkyScanner.Test
