@@ -4,7 +4,7 @@ using System;
 
 namespace SkyScanner.Data.Converter
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     internal class SkyScannerEnumValueAttribute : Attribute
     {
         public string Value { get; set; }

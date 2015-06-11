@@ -11,7 +11,7 @@ using SkyScanner.Settings;
 
 namespace SkyScanner.Services
 {
-    internal class LocationAutosuggest : Requester<List<Data.Location>>
+    internal class LocationAutosuggest : Requester<List<Location>>
     {
         private readonly LocationAutosuggestSettings _settings;
         
