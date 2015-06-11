@@ -61,6 +61,7 @@
     <Compile Include="Services\Base\RequesterWithPing.cs" />
     <Compile Include="Services\Base\Requester.cs" />
     <Compile Include="Data\Base\IPingResponse.cs" />
+    <Compile Include="Services\IScanner.cs" />
     <Compile Include="Settings\Base\RequestSettings.cs" />
     <Compile Include="Services\Base\ResponsePinger.cs" />
     <Compile Include="Data\Base\ResponseStatus.cs" />

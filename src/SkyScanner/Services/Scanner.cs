@@ -19,7 +19,7 @@ namespace SkyScanner.Services
     /// <summary>
     /// The facade to query all SkyScanner services
     /// </summary>
-    public sealed class Scanner
+    public sealed class Scanner : IScanner
     {
         private readonly string _apiKey;
         private readonly IExecutionStrategy _executionStrategy;
