@@ -17,7 +17,7 @@ namespace SkyScanner.Settings
         /// An initialized RetryExecutionStrategy with 1 second retry delay, and 2 retries on 
         /// unexpected exceptions
         /// </summary>
-        public static RetryExecutionStrategy Default = new RetryExecutionStrategy(Duration.FromSeconds(1));
+        public static readonly RetryExecutionStrategy Default = new RetryExecutionStrategy(Duration.FromSeconds(1));
 
         private readonly int _retryCountOnException;
         private readonly Duration _retryInterval;

@@ -15,21 +15,15 @@ namespace SkyScanner.Services.Helpers
         {
             var prop = base.CreateProperty(member, memberSerialization);
             var property = member as PropertyInfo;
-            if (!prop.Readable)
+            if (!prop.Readable && property != null)
             {
-                if (property != null)
-                {
-                    var hasPrivateGetter = property.GetGetMethod(true) != null;
-                    prop.Readable = hasPrivateGetter;
-                }
+                var hasPrivateGetter = property.GetGetMethod(true) != null;
+                prop.Readable = hasPrivateGetter;
             }
-            if (!prop.Writable)
+            if (!prop.Writable && property != null)
             {
-                if (property != null)
-                {
-                    var hasPrivateSetter = property.GetSetMethod(true) != null;
-                    prop.Writable = hasPrivateSetter;
-                }
+                var hasPrivateSetter = property.GetSetMethod(true) != null;
+                prop.Writable = hasPrivateSetter;
             }
             return prop;
         }

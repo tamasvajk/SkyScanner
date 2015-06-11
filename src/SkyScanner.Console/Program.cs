@@ -18,12 +18,11 @@ namespace SkyScanner.Console
     {
         static void Main()
         {
-            Console.WriteLine("Detailed search:");
+            WriteLine("Detailed search:");
             SearchDetailed().Wait();
             WriteSeparator(2);
-            Console.WriteLine("Simplified search:");
+            WriteLine("Simplified search:");
             SearchSimplified().Wait();
-            Console.ReadKey();
         }
 
         private static async Task SearchSimplified()
@@ -44,7 +43,7 @@ namespace SkyScanner.Console
 
             if (!itineraries.Any())
             {
-                Console.WriteLine("No flights");
+                WriteLine("No flights");
                 return;
             }
 
@@ -82,7 +81,7 @@ namespace SkyScanner.Console
 
             if (currentLocale == null)
             {
-                WriteErrorLine("Couldn't find locale, using default instead");
+                WriteLine(ErrorColor, "Couldn't find locale, using default instead");
                 currentLocale = Locale.Default;
             }
 
@@ -92,7 +91,7 @@ namespace SkyScanner.Console
 
             if (currentMarket == null)
             {
-                WriteErrorLine("Couldn't find market, using default instead");
+                WriteLine(ErrorColor, "Couldn't find market, using default instead");
                 currentMarket = Market.Default;
             }
 
@@ -102,7 +101,7 @@ namespace SkyScanner.Console
 
             if (currentCurrency == null)
             {
-                WriteErrorLine("Couldn't find currency, using default instead");
+                WriteLine(ErrorColor, "Couldn't find currency, using default instead");
                 currentCurrency = Currency.Default;
             }
             
@@ -112,7 +111,7 @@ namespace SkyScanner.Console
                 LocationAutosuggestQueryType.Query, currentMarket, currentCurrency, currentLocale))).First();
             if (from == null)
             {
-                WriteErrorLine("Couldn't find '{0}'", fromPlaceName);
+                WriteLine(ErrorColor, "Couldn't find '{0}'", fromPlaceName);
                 return;
             }
 
@@ -122,7 +121,7 @@ namespace SkyScanner.Console
                 LocationAutosuggestQueryType.Query, currentMarket, currentCurrency, currentLocale))).FirstOrDefault();
             if (to == null)
             {
-                WriteErrorLine("Couldn't find '{0}'", toPlaceName);
+                WriteLine(ErrorColor, "Couldn't find '{0}'", toPlaceName);
                 return;
             }
 
@@ -141,14 +140,14 @@ namespace SkyScanner.Console
             var outboundDate = new LocalDate(2015, 06, 19);
             var inboundDate = new LocalDate(2015, 06, 25);
 
-            Console.Write("Flights from ");
-            WriteImportant(from.PlaceName);
-            Console.Write(" to ");
-            WriteImportantLine(to.PlaceName);
-            Console.Write(" on ");
-            WriteImportant(outboundDate.ToString("d", CultureInfo.InvariantCulture));
-            Console.Write(" and back on ");
-            WriteImportantLine(inboundDate.ToString("d", CultureInfo.InvariantCulture));
+            Write("Flights from ");
+            Write(ImportantColor, from.PlaceName);
+            Write(" to ");
+            WriteLine(ImportantColor, to.PlaceName);
+            Write(" on ");
+            Write(ImportantColor, outboundDate.ToString("d", CultureInfo.InvariantCulture));
+            Write(" and back on ");
+            WriteLine(ImportantColor, inboundDate.ToString("d", CultureInfo.InvariantCulture));
             
             //Query flights
             var itineraries = await scanner.QueryFlight(
@@ -163,7 +162,7 @@ namespace SkyScanner.Console
 
             if (!itineraries.Any())
             {
-                Console.WriteLine("No flights");
+                WriteLine("No flights");
                 return;
             }
 
@@ -172,7 +171,7 @@ namespace SkyScanner.Console
                 WriteItinerary(itinerary, currentCurrency);
             }
 
-            Console.WriteLine("----------------------------------------------");
+            WriteLine("----------------------------------------------");
 
             //Query bookings (note, this is forbidden by SkyScanner, should only query exact booking details if a user requests them)
             var bookingQueryTasks = itineraries.Select(scanner.QueryBooking);
@@ -191,9 +190,9 @@ namespace SkyScanner.Console
         private static void WriteBookingResult(BookingResponse response, Currency currentCurrency)
         {
             var price = response.BookingOptions.Select(option => option.BookingItems.Sum(item => item.Price)).Min();
-            Console.Write("  price: ");
+            Write("  price: ");
             //Format price according to currency
-            WriteImportantLine(currentCurrency.FormatValue(price));
+            WriteLine(ImportantColor, currentCurrency.FormatValue(price));
             WriteLegs(response.Itinerary);
         }
 
@@ -202,24 +201,24 @@ namespace SkyScanner.Console
             var price = itinerary.PricingOptions.Min(option => option.Price);
             var pricingOption = itinerary.PricingOptions.First(option => option.Price == price);
 
-            Console.Write("  price: ");
+            Write("  price: ");
             //Format price according to currency
-            WriteImportantLine(currentCurrency.FormatValue(price));
-            Console.Write("  age: ");
-            WriteImportantLine(pricingOption.QuoteAge + "min");
+            WriteLine(ImportantColor, currentCurrency.FormatValue(price));
+            Write("  age: ");
+            WriteLine(ImportantColor, pricingOption.QuoteAge + "min");
             WriteLegs(itinerary);
         }
 
         private static void WriteLegs(Itinerary itinerary)
         {
-            Console.WriteLine("   outbound itinerary at {1} with {0} ({2}-{3}, {4} stop{5})",
+            WriteLine("   outbound itinerary at {1} with {0} ({2}-{3}, {4} stop{5})",
                 string.Join(", ", itinerary.OutboundLeg.OperatingCarriers.Select(c => c.Name)),
                 itinerary.OutboundLeg.DepartureTime.TimeOfDay,
                 itinerary.OutboundLeg.Origin.Code,
                 itinerary.OutboundLeg.Destination.Code,
                 itinerary.OutboundLeg.Stops.Count,
                 itinerary.OutboundLeg.Stops.Count == 1 ? "" : "s");
-            Console.WriteLine("   inbound itinerary at {1} with {0} ({2}-{3}, {4} stop{5})",
+            WriteLine("   inbound itinerary at {1} with {0} ({2}-{3}, {4} stop{5})",
                 string.Join(", ", itinerary.InboundLeg.OperatingCarriers.Select(c => c.Name)),
                 itinerary.InboundLeg.DepartureTime.TimeOfDay,
                 itinerary.InboundLeg.Origin.Code,
@@ -229,32 +228,38 @@ namespace SkyScanner.Console
         }
 
         #region Write helpers
+        
+        private static void Write(ConsoleColor color, string format, params object[] arg)
+        {
+            var prevConsoleColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Write(format, arg);
+            Console.ForegroundColor = prevConsoleColor;
+        }
+        private static void WriteLine(ConsoleColor color, string format, params object[] arg)
+        {
+            Write(color, format + Environment.NewLine, arg);
+        }
+        private static void WriteLine(string format, params object[] arg)
+        {
+            Write(format + Environment.NewLine, arg);
+        }
+        private static void Write(string format, params object[] arg)
+        {
+            //write to Console for the time being
+            Console.Write(format, arg);
+        }
 
         private static void WriteSeparator(int number = 1)
         {
             for (int i = 0; i < number; i++)
             {
-                Console.WriteLine("----------------------------------------------");
+                WriteLine("----------------------------------------------");
             }
         }
-        private static void WriteErrorLine(string text, params object[] args)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(text, args);
-            Console.ResetColor();
-        }
-        private static void WriteImportant(string text, params object[] args)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(text, args);
-            Console.ResetColor();
-        }
-        private static void WriteImportantLine(string text, params object[] args)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(text, args);
-            Console.ResetColor();
-        }
+        
+        private const ConsoleColor ErrorColor = ConsoleColor.Red;
+        private const ConsoleColor ImportantColor = ConsoleColor.Green;
 
         #endregion
     }
