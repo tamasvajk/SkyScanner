@@ -136,8 +136,9 @@ namespace SkyScanner.Console
                 inboundDepartureEndTime: new LocalTime(18, 30, 0)
                 );
 
-            var outboundDate = new LocalDate(2015, 06, 19);
-            var inboundDate = new LocalDate(2015, 06, 25);
+            var now = new LocalDate(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var outboundDate = now.PlusWeeks(1);
+            var inboundDate = now.PlusWeeks(2);
 
             Write("Flights from ");
             Write(ImportantColor, from.PlaceName);
