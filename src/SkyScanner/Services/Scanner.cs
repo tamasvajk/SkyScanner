@@ -16,6 +16,10 @@ using SkyScanner.Settings;
 
 namespace SkyScanner.Services
 {
+    using System;
+    using System.Configuration;
+    using System.Diagnostics;
+
     /// <summary>
     /// The facade to query all SkyScanner services
     /// </summary>
@@ -40,6 +44,12 @@ namespace SkyScanner.Services
         /// <param name="executionStrategy">Query execution strategy</param>
         public Scanner(string apiKey, IExecutionStrategy executionStrategy)
         {
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                throw new ArgumentNullException(apiKey, "apiKey value provided to Scanner constructor is null or empty."
+                                                        + "Please check provided value or web/app.config file.");
+            }
+
             _apiKey = apiKey;
             _executionStrategy = executionStrategy;
         }
