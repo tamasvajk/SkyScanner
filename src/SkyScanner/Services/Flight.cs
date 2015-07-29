@@ -24,7 +24,7 @@ namespace SkyScanner.Services
             get
             {
                 return client =>
-                    client.PostAsync("http://business.skyscanner.net/apiservices/pricing/v1.0/",
+                    client.PostAsync("http://partners.api.skyscanner.net/apiservices/pricing/v1.0/",
                         GetFormContent());
             }
         }
