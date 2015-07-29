@@ -30,10 +30,14 @@ namespace SkyScanner.Console
             var from = (await scanner.QueryLocation("London")).First();
             var to = (await scanner.QueryLocation("New York")).First();
 
+            var now = new LocalDate(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var outboundDate = now.PlusWeeks(1);
+            var inboundDate = now.PlusWeeks(2);
+
             //Query flights
             var itineraries = await scanner.QueryFlight(
                 new FlightQuerySettings(
-                    new FlightRequestSettings(from, to, new LocalDate(2015, 06, 19), new LocalDate(2015, 06, 25)),
+                    new FlightRequestSettings(from, to, outboundDate, inboundDate),
                     new FlightResponseSettings(SortType.Price, SortOrder.Ascending)));
 
             itineraries = itineraries
