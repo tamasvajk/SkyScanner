@@ -29,7 +29,7 @@ namespace SkyScanner.Console
             var scanner = new Scanner(ConfigurationManager.AppSettings["apiKey"]);
             var from = (await scanner.QueryLocation("London")).First();
             var to = (await scanner.QueryLocation("New York")).First();
-
+            
             var now = new LocalDate(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var outboundDate = now.PlusWeeks(1);
             var inboundDate = now.PlusWeeks(2);
