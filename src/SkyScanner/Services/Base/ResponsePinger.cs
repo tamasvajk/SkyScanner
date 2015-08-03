@@ -12,9 +12,24 @@ using SkyScanner.Settings.Base;
 
 namespace SkyScanner.Services.Base
 {
+    using System.Diagnostics;
+
     internal abstract class ResponsePinger<TResponse> : HttpRetry<TResponse, RetryResponsePingException>
         where TResponse : class, IPingResponse
     {
+        /// <summary>
+        /// The OnInterimResultsRecieved fires when interim results become available from the SkyScanner API
+        /// </summary>
+        internal event InterimResultsRecieved<TResponse> OnInterimResultsRecieved;
+
+        /// <summary>
+        /// The InterimResultsRecieved delegate
+        /// </summary>
+        /// <typeparam name="T">The type of interim results</typeparam>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args">The currently available results</param>
+        internal delegate void InterimResultsRecieved<T>(object sender, T args);
+
         protected ResponsePinger(string apiKey) : base(apiKey, 1000)
         {
         }
@@ -32,6 +47,8 @@ namespace SkyScanner.Services.Base
                         PostProcess(response);
                         return response;
                     }
+
+                    this.OnInterimResultsRecieved?.Invoke(this, response);
 
                     throw new RetryResponsePingException();
                 case HttpStatusCode.NoContent:
@@ -63,4 +80,6 @@ namespace SkyScanner.Services.Base
             return query.ToString();
         }
     }
+
+    
 }

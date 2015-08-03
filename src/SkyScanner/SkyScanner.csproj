@@ -56,12 +56,19 @@
     <Compile Include="..\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
+    <Compile Include="Data\Comparison\DeepItineraryComparer.cs" />
+    <Compile Include="Data\Comparison\ShallowItineraryComparer.cs" />
+    <Compile Include="Services\Helpers\DifferentialInterimFlightResultHandler.cs" />
+    <Compile Include="Services\Helpers\IncreasingIntervalGenerator.cs" />
     <Compile Include="Services\Base\HttpRetry.cs" />
     <Compile Include="Data\Base\IContainerResponse.cs" />
+    <Compile Include="Services\Interfaces\ITaskDelayGenerator.cs" />
     <Compile Include="Services\Base\RequesterWithPing.cs" />
     <Compile Include="Services\Base\Requester.cs" />
     <Compile Include="Data\Base\IPingResponse.cs" />
-    <Compile Include="Services\IScanner.cs" />
+    <Compile Include="Services\Interfaces\IInterimFlightResultHandler.cs" />
+    <Compile Include="Services\Interfaces\IScanner.cs" />
+    <Compile Include="Services\InterimChangeSet.cs" />
     <Compile Include="Settings\Base\RequestSettings.cs" />
     <Compile Include="Services\Base\ResponsePinger.cs" />
     <Compile Include="Data\Base\ResponseStatus.cs" />
@@ -136,7 +143,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

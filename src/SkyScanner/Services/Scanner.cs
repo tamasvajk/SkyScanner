@@ -17,8 +17,8 @@ using SkyScanner.Settings;
 namespace SkyScanner.Services
 {
     using System;
-    using System.Configuration;
-    using System.Diagnostics;
+
+    using SkyScanner.Services.Interfaces;
 
     /// <summary>
     /// The facade to query all SkyScanner services
@@ -70,16 +70,35 @@ namespace SkyScanner.Services
         /// date (or single date for one-way searches).
         /// </summary>
         /// <param name="flightQuerySettings">Settings for the query</param>
-        /// <returns></returns>
-        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings)
+        /// <param name="interimResultCallback">The callback that is called when interim results are recieved</param>
+        /// <param name="doCallbackWithDiffOnly">Indicates whether the callback is called with all the results, or only the new and updated itineraries</param>
+        /// <returns>The collection of itineraries from SkyScanner</returns>
+        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings, Action<InterimChangeSet<Itinerary>> interimResultCallback = null)
         {
+            var interimResultHandler = new DifferentialInterimFlightResultHandler();
+
             var flightService = new Flight(_apiKey, flightQuerySettings);
+
             return await _executionStrategy.Execute(async () =>
             {
                 var pinger = await flightService.SendQuery();
+
+                if (interimResultCallback != null)
+                {
+                    pinger.OnInterimResultsRecieved += (sender, args) =>
+                        {
+                            interimResultCallback(interimResultHandler.Handle(args));
+                        };
+                }
+
                 var response = await pinger.SendQuery();
                 return response.Itineraries;
             });
+        }
+
+        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings)
+        {
+            return await this.QueryFlight(flightQuerySettings, null);
         }
 
         /// <summary>

@@ -1,0 +1,1 @@
+﻿The .JSON files in this folder were saved using fiddler by running an actual query against the SkyScanner API.

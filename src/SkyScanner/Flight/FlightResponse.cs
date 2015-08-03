@@ -6,6 +6,8 @@ using SkyScanner.Data.Base;
 
 namespace SkyScanner.Flight
 {
+    using System;
+
     /// <summary>
     /// Response for a Live Pricing Service query
     /// </summary>

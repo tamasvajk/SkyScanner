@@ -13,6 +13,9 @@ using SkyScanner.Settings;
 
 namespace SkyScanner.Console
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
     class Program
     {
         static void Main()
@@ -38,7 +41,8 @@ namespace SkyScanner.Console
             var itineraries = await scanner.QueryFlight(
                 new FlightQuerySettings(
                     new FlightRequestSettings(from, to, outboundDate, inboundDate),
-                    new FlightResponseSettings(SortType.Price, SortOrder.Ascending)));
+                    new FlightResponseSettings(SortType.Price, SortOrder.Ascending)), 
+                WriteToDebug());
 
             itineraries = itineraries
                 .Take(5)
@@ -158,7 +162,7 @@ namespace SkyScanner.Console
                 new FlightQuerySettings(
                     new FlightRequestSettings(from, to, outboundDate, inboundDate, 1,
                         currency: currentCurrency, marketCountry: currentMarket, locale: currentLocale),
-                    flightResponseSettings));
+                    flightResponseSettings), WriteToDebug());
 
             itineraries = itineraries
                 .Take(5)
@@ -189,6 +193,13 @@ namespace SkyScanner.Console
             {
                 WriteBookingResult(response, currentCurrency);
             }
+        }
+
+        private static Action<InterimChangeSet<Itinerary>> WriteToDebug()
+        {            
+            return list => Debug.WriteLine($"Interim results recieved ! {list.All.Count()} "
+                                        + $"total itineraries, {list.Additions.Count()} new "
+                                        + $"and {list.Updates.Count()} updates");
         }
 
         private static void WriteBookingResult(BookingResponse response, Currency currentCurrency)

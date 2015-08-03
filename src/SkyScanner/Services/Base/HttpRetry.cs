@@ -9,12 +9,18 @@ using SkyScanner.Exceptions;
 
 namespace SkyScanner.Services.Base
 {
+    using SkyScanner.Services.Helpers;
+    using SkyScanner.Services.Interfaces;
+
     internal abstract class HttpRetry<TResponse, TException> 
         where TException : Exceptions.Exception
     {
         private readonly int _initialDelay;
+
         protected readonly string ApiKey;
         protected abstract Func<HttpClient, Task<HttpResponseMessage>> HttpMethod { get; }
+
+        private readonly ITaskDelayGenerator delayGenerator = new IncreasingIntervalGenerator();
 
         protected HttpRetry(string apiKey, int initialDelay = 0)
         {
@@ -28,16 +34,20 @@ namespace SkyScanner.Services.Base
         {
             await Task.Delay(_initialDelay);
 
-            return await Retry.Do<TResponse, TException>(async () =>
-            {
-                using (var client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
-                    client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "application/json");
-                    var httpResponseMessage = await HttpMethod(client);
-                    return await HandleResponse(httpResponseMessage);
-                }
-            }, RetryTimeSpan);
+            return await Retry.Do<TResponse, TException>(
+                async () =>
+                    {
+                        await Task.Delay(this.delayGenerator.NextInterval);
+
+                        using (var client = new HttpClient())
+                        {
+                            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type","application/x-www-form-urlencoded");
+                            client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "application/json");
+                            var httpResponseMessage = await HttpMethod(client);
+                            return await HandleResponse(httpResponseMessage);
+                        }
+                    },
+                RetryTimeSpan);
         }
 
         protected virtual Task<TResponse> HandleResponse(HttpResponseMessage httpResponseMessage)

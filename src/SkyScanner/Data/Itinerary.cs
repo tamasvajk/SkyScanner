@@ -8,6 +8,11 @@ namespace SkyScanner.Data
 {
     public class Itinerary
     {
+        public Itinerary()
+        {
+            this.PricingOptions = new List<PricingOption>();
+        }
+
         internal string OutboundLegId { get; set; }
         internal string InboundLegId { get; set; }
         /// <summary>
