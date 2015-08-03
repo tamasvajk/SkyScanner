@@ -46,7 +46,7 @@ namespace SkyScanner.Services
         {
             if (string.IsNullOrEmpty(apiKey))
             {
-                throw new ArgumentNullException(apiKey, "apiKey value provided to Scanner constructor is null or empty."
+                throw new ArgumentNullException(nameof(apiKey), "apiKey value provided to Scanner constructor is null or empty."
                                                         + "Please check provided value or web/app.config file.");
             }
 
