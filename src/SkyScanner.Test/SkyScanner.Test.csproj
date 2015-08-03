@@ -68,6 +68,7 @@
     <Compile Include="MarketTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FlightTest.cs" />
+    <Compile Include="ScannerTests.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
