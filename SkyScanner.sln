@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1A911934-D76E-479A-BDAE-FAED4F2D3333}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyScanner.Internal.Test", "src\SkyScanner.Internal.Test\SkyScanner.Internal.Test.csproj", "{870D63F3-67C7-40A0-9951-6EA7779B181C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,11 +36,16 @@ Global
 		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{870D63F3-67C7-40A0-9951-6EA7779B181C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{870D63F3-67C7-40A0-9951-6EA7779B181C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{870D63F3-67C7-40A0-9951-6EA7779B181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{870D63F3-67C7-40A0-9951-6EA7779B181C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2D8D1131-9ED5-4934-BCFC-9CC5C26C4CBD} = {1A911934-D76E-479A-BDAE-FAED4F2D3333}
+		{870D63F3-67C7-40A0-9951-6EA7779B181C} = {1A911934-D76E-479A-BDAE-FAED4F2D3333}
 	EndGlobalSection
 EndGlobal
