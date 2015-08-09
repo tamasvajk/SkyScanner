@@ -1,11 +1,9 @@
-﻿namespace SkyScanner.Test
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkyScanner.Services;
+
+namespace SkyScanner.Test
 {
-    using System;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using SkyScanner.Services;
-
     [TestClass]
     public class ScannerTests
     {

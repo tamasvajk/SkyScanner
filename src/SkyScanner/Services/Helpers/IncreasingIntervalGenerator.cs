@@ -1,10 +1,8 @@
-﻿namespace SkyScanner.Services.Helpers
+﻿using System;
+using SkyScanner.Services.Interfaces;
+
+namespace SkyScanner.Services.Helpers
 {
-    using System;
-    using System.Diagnostics;
-
-    using SkyScanner.Services.Interfaces;
-
     /// <summary>
     /// The IncreasingIntervalGenerator is an implementation of ITaskDelayGenerator that
     /// tries to mimic the behavior described in http://business.skyscanner.net/portal/en-GB/Documentation/Faq#qf7
@@ -16,7 +14,7 @@
         /// <summary>
         /// The number of times NextInterval was called
         /// </summary>
-        private int nextIntervalCallCount = 0;
+        private int _nextIntervalCallCount = 0;
 
         /// <summary>
         /// The maximum delay value ( 3 seconds now ). In case more than 3 intervals were generated
@@ -36,8 +34,8 @@
         {
             get
             {
-                var result = this.CalculateDelay();
-                this.nextIntervalCallCount++;
+                var result = CalculateDelay();
+                _nextIntervalCallCount++;
                 return result;
             }
         }
@@ -45,7 +43,7 @@
         /// <summary>
         /// Gets the attempt category.
         /// </summary>
-        private AttemptCategory Attempt => this.nextIntervalCallCount > 3 ? AttemptCategory.AfterThird : (AttemptCategory) this.nextIntervalCallCount;
+        private AttemptCategory Attempt => _nextIntervalCallCount > 3 ? AttemptCategory.AfterThird : (AttemptCategory) _nextIntervalCallCount;
 
         /// <summary>
         /// Enum categorization of the interval counter
@@ -66,12 +64,12 @@
         private int CalculateDelay()
         {
             int result;
-            switch (this.Attempt)
+            switch (Attempt)
             {
                 case AttemptCategory.First:
                 case AttemptCategory.Second:
                 case AttemptCategory.Third:
-                    result = DelayPerAttempt * this.nextIntervalCallCount;
+                    result = DelayPerAttempt * _nextIntervalCallCount;
                     break;
                 case AttemptCategory.AfterThird:
                     result = MaxDelayValue;

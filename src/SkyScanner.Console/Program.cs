@@ -2,21 +2,20 @@
 
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using NodaTime;
 using SkyScanner.Booking;
 using SkyScanner.Data;
+using SkyScanner.Data.Interim;
 using SkyScanner.Services;
 using SkyScanner.Settings;
 
 namespace SkyScanner.Console
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-
-    class Program
+    static class Program
     {
         static void Main()
         {

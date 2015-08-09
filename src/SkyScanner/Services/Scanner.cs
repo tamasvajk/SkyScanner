@@ -1,5 +1,6 @@
 // Copyright (c) 2015 Tamas Vajk. All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -10,16 +11,15 @@ using NodaTime.Serialization.JsonNet;
 using NodaTime.Text;
 using SkyScanner.Booking;
 using SkyScanner.Data;
+using SkyScanner.Data.Interim;
+using SkyScanner.Flight;
 using SkyScanner.Services.Base;
 using SkyScanner.Services.Helpers;
+using SkyScanner.Services.Interfaces;
 using SkyScanner.Settings;
 
 namespace SkyScanner.Services
 {
-    using System;
-
-    using SkyScanner.Services.Interfaces;
-
     /// <summary>
     /// The facade to query all SkyScanner services
     /// </summary>
@@ -71,11 +71,10 @@ namespace SkyScanner.Services
         /// </summary>
         /// <param name="flightQuerySettings">Settings for the query</param>
         /// <param name="interimResultCallback">The callback that is called when interim results are recieved</param>
-        /// <param name="doCallbackWithDiffOnly">Indicates whether the callback is called with all the results, or only the new and updated itineraries</param>
         /// <returns>The collection of itineraries from SkyScanner</returns>
-        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings, Action<InterimChangeSet<Itinerary>> interimResultCallback = null)
+        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings, Action<InterimChangeSet<Itinerary>> interimResultCallback)
         {
-            var interimResultHandler = new DifferentialInterimFlightResultHandler();
+            var interimResultHandler = new InterimResultProvider<FlightResponse, Itinerary>();
 
             var flightService = new Flight(_apiKey, flightQuerySettings);
 
@@ -87,7 +86,7 @@ namespace SkyScanner.Services
                 {
                     pinger.OnInterimResultsRecieved += (sender, args) =>
                         {
-                            interimResultCallback(interimResultHandler.Handle(args));
+                            interimResultCallback(interimResultHandler.Calculate(args));
                         };
                 }
 
@@ -98,7 +97,7 @@ namespace SkyScanner.Services
 
         public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings)
         {
-            return await this.QueryFlight(flightQuerySettings, null);
+            return await QueryFlight(flightQuerySettings, null);
         }
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace SkyScanner.Data
 
         public PricingOption()
         {
-            this.AgentIds = new List<int>();
+            AgentIds = new List<int>();
         }
     }
 }

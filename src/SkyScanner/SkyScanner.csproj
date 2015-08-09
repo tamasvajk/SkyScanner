@@ -56,9 +56,11 @@
     <Compile Include="..\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
-    <Compile Include="Data\Comparison\DeepItineraryComparer.cs" />
-    <Compile Include="Data\Comparison\ShallowItineraryComparer.cs" />
-    <Compile Include="Services\Helpers\DifferentialInterimFlightResultHandler.cs" />
+    <Compile Include="Data\Comparison\IInterimEquatable.cs" />
+    <Compile Include="Data\Comparison\ShallowEqualityComparer.cs" />
+    <Compile Include="Data\Interim\InterimPair.cs" />
+    <Compile Include="Data\Interim\ITopLevelResponseContainer.cs" />
+    <Compile Include="Services\Helpers\InterimResultProvider.cs" />
     <Compile Include="Services\Helpers\IncreasingIntervalGenerator.cs" />
     <Compile Include="Services\Base\HttpRetry.cs" />
     <Compile Include="Data\Base\IContainerResponse.cs" />
@@ -66,9 +68,9 @@
     <Compile Include="Services\Base\RequesterWithPing.cs" />
     <Compile Include="Services\Base\Requester.cs" />
     <Compile Include="Data\Base\IPingResponse.cs" />
-    <Compile Include="Services\Interfaces\IInterimFlightResultHandler.cs" />
+    <Compile Include="Services\Interfaces\IInterimResultProvider.cs" />
     <Compile Include="Services\Interfaces\IScanner.cs" />
-    <Compile Include="Services\InterimChangeSet.cs" />
+    <Compile Include="Data\Interim\InterimChangeSet.cs" />
     <Compile Include="Settings\Base\RequestSettings.cs" />
     <Compile Include="Services\Base\ResponsePinger.cs" />
     <Compile Include="Data\Base\ResponseStatus.cs" />

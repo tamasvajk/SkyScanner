@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkyScanner.Data;
 
 namespace SkyScanner.Test
 {
@@ -18,7 +19,7 @@ namespace SkyScanner.Test
         [TestMethod]
         public async Task Markets_Can_Be_Queried()
         {
-            var markets = await Scanner.QueryMarket(Data.Locale.Default);
+            var markets = await Scanner.QueryMarket(Locale.Default);
             Assert.IsNotNull(markets);
             Assert.AreNotEqual(0, markets.Count);
         }
@@ -26,8 +27,8 @@ namespace SkyScanner.Test
         [TestMethod]
         public async Task Default_Market_Exists()
         {
-            var markets = await Scanner.QueryMarket(Data.Locale.Default);
-            Assert.IsNotNull(markets.SingleOrDefault(market => market.Code == Data.Market.Default.Code));
+            var markets = await Scanner.QueryMarket(Locale.Default);
+            Assert.IsNotNull(markets.SingleOrDefault(market => market.Code == Market.Default.Code));
         }
     }
 }

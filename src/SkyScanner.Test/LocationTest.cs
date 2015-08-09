@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkyScanner.Data;
 using SkyScanner.Settings;
 
 namespace SkyScanner.Test
@@ -29,26 +30,26 @@ namespace SkyScanner.Test
         {
             var locales = await Scanner.QueryLocale();
             var locationsEng = await Scanner.QueryLocation(new LocationAutosuggestSettings("London", 
-                LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "en-GB")));
+                LocationAutosuggestQueryType.Query, Market.Default, Currency.Default, locales.First(locale => locale.Code == "en-GB")));
 
             var locationsFr = await Scanner.QueryLocation(new LocationAutosuggestSettings("London", 
-                LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
+                LocationAutosuggestQueryType.Query, Market.Default, Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(locationsEng.Count, locationsFr.Count);
 
             var locationsHeathrow = await Scanner.QueryLocation(new LocationAutosuggestSettings("LHR-sky", 
-                LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
+                LocationAutosuggestQueryType.Query, Market.Default, Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(1, locationsHeathrow.Count);
 
             var ipBased = await Scanner.QueryLocation(new LocationAutosuggestSettings("212.58.244.18-IP", 
-                LocationAutosuggestQueryType.Query, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
+                LocationAutosuggestQueryType.Query, Market.Default, Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(1, ipBased.Count);
             Assert.AreEqual("LOND-sky", ipBased.First().PlaceId);
 
             var info = await Scanner.QueryLocation(new LocationAutosuggestSettings("LOND-sky", 
-                LocationAutosuggestQueryType.Id, Data.Market.Default, Data.Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
+                LocationAutosuggestQueryType.Id, Market.Default, Currency.Default, locales.First(locale => locale.Code == "fr-FR")));
 
             Assert.AreEqual(1, info.Count);
         }

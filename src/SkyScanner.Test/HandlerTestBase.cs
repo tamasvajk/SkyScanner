@@ -1,14 +1,14 @@
-﻿namespace SkyScanner.Test
+﻿using System.IO;
+using Newtonsoft.Json;
+using SkyScanner.Flight;
+using SkyScanner.Services;
+
+namespace SkyScanner.Test
 {
-    using System.IO;
-
-    using Newtonsoft.Json;
-
-    using SkyScanner.Flight;
-    using SkyScanner.Services;
-
     public class HandlerTestBase
     {
+        protected HandlerTestBase() { }
+
         internal static FlightResponse DeserializeResponse(string filename)
         {
             var result = JsonConvert.DeserializeObject<FlightResponse>(

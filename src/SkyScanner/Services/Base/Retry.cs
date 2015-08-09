@@ -6,7 +6,7 @@ using NodaTime;
 
 namespace SkyScanner.Services.Base
 {
-    internal class Retry
+    internal static class Retry
     {
         /// <summary>
         /// Retries an function several times until a certain number of expected and unexpected exceptions occurred or the result could be retrieved

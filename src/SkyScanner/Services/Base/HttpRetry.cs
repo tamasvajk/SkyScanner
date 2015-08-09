@@ -6,21 +6,21 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NodaTime;
 using SkyScanner.Exceptions;
+using SkyScanner.Services.Helpers;
+using SkyScanner.Services.Interfaces;
+using Exception = SkyScanner.Exceptions.Exception;
 
 namespace SkyScanner.Services.Base
 {
-    using SkyScanner.Services.Helpers;
-    using SkyScanner.Services.Interfaces;
-
     internal abstract class HttpRetry<TResponse, TException> 
-        where TException : Exceptions.Exception
+        where TException : Exception
     {
         private readonly int _initialDelay;
 
         protected readonly string ApiKey;
         protected abstract Func<HttpClient, Task<HttpResponseMessage>> HttpMethod { get; }
 
-        private readonly ITaskDelayGenerator delayGenerator = new IncreasingIntervalGenerator();
+        private readonly ITaskDelayGenerator _delayGenerator = new IncreasingIntervalGenerator();
 
         protected HttpRetry(string apiKey, int initialDelay = 0)
         {
@@ -37,7 +37,7 @@ namespace SkyScanner.Services.Base
             return await Retry.Do<TResponse, TException>(
                 async () =>
                     {
-                        await Task.Delay(this.delayGenerator.NextInterval);
+                        await Task.Delay(_delayGenerator.NextInterval);
 
                         using (var client = new HttpClient())
                         {

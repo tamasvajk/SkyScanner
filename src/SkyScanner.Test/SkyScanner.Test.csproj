@@ -75,11 +75,11 @@
     </Compile>
     <Compile Include="BookingTest.cs" />
     <Compile Include="CurrencyTest.cs" />
-    <Content Include="data\readme.txt" />
+    <Content Include="Data\readme.txt" />
     <Compile Include="HandlerTestBase.cs" />
-    <Compile Include="IntervalGeneration\IncreasingIntervalGeneratorTests.cs" />
-    <Compile Include="InterimResults\DifferentialInterimResultHandlerTests.cs" />
-    <Compile Include="InterimResults\EquivalencyTests.cs" />
+    <Compile Include="IntervalGeneration\IncreasingIntervalGeneratorTest.cs" />
+    <Compile Include="InterimResults\InterimResultProviderTest.cs" />
+    <Compile Include="InterimResults\EquivalencyTest.cs" />
     <Compile Include="GenericTest.cs" />
     <Compile Include="LocaleTest.cs" />
     <Compile Include="LocationTest.cs" />
@@ -99,23 +99,23 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="data\response_3.json">
+    <Content Include="Data\response_3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\response_4.json">
+    <Content Include="Data\response_4.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\response_5.json">
+    <Content Include="Data\response_5.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\response_6.json">
+    <Content Include="Data\response_6.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <Content Include="data\response_1.json">
+    <Content Include="Data\response_1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\response_2.json">
+    <Content Include="Data\response_2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

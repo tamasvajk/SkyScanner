@@ -1,11 +1,10 @@
-﻿namespace SkyScanner.Test.IntervalGeneration
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkyScanner.Services.Helpers;
+
+namespace SkyScanner.Test.IntervalGeneration
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using SkyScanner.Services.Helpers;
-
     [TestClass]
-    public class IncreasingIntervalGeneratorTests
+    public class IncreasingIntervalGeneratorTest
     {
         [TestMethod]
         public void IncreasingIntervalGenerator_ShouldReturnIncreasingTaskDelays()

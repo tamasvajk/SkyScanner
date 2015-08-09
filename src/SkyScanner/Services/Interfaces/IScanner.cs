@@ -1,13 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using SkyScanner.Booking;
+using SkyScanner.Data;
+using SkyScanner.Data.Interim;
+using SkyScanner.Settings;
+
 namespace SkyScanner.Services.Interfaces
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using SkyScanner.Booking;
-    using SkyScanner.Data;
-    using SkyScanner.Settings;
-
     public interface IScanner
     {
         Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings);

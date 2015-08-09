@@ -1,7 +1,7 @@
-namespace SkyScanner.Services
-{
-    using System.Collections.Generic;
+using System.Collections.Generic;
 
+namespace SkyScanner.Data.Interim
+{
     /// <summary>
     /// The InterimChangeSet type, is a data transfer object that can be used to store
     /// interim data sets when interim results become available. It also allows to explicitly
@@ -22,19 +22,19 @@ namespace SkyScanner.Services
         /// <summary>
         /// The updated items
         /// </summary>
-        public IEnumerable<T> Updates { get; private set; }
+        public IEnumerable<InterimPair<T>> Updates { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InterimChangeSet"/> class. 
+        /// Initializes a new instance of the <see cref="InterimChangeSet{T}"/> class. 
         /// </summary>
         /// <param name="all">All the items that were recieved thusfar</param>
         /// <param name="additions">New additions - compared to the previous event</param>
         /// <param name="updated">Updated itineraries - compared to the previous event</param>
-        public InterimChangeSet(IEnumerable<T> all, IEnumerable<T> additions, IEnumerable<T> updated)
+        public InterimChangeSet(IEnumerable<T> all, IEnumerable<T> additions, IEnumerable<InterimPair<T>> updated)
         {
-            this.All = all ?? new List<T>();
-            this.Additions = additions ?? new List<T>();
-            this.Updates = updated ?? new List<T>();
+            All = all ?? new List<T>();
+            Additions = additions ?? new List<T>();
+            Updates = updated ?? new List<InterimPair<T>>();
         }
     }
 }

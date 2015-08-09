@@ -3,15 +3,14 @@
 using System.Collections.Generic;
 using SkyScanner.Data;
 using SkyScanner.Data.Base;
+using SkyScanner.Data.Interim;
 
 namespace SkyScanner.Flight
 {
-    using System;
-
     /// <summary>
     /// Response for a Live Pricing Service query
     /// </summary>
-    internal class FlightResponse : IPingResponse, IContainerResponse
+    internal class FlightResponse : IPingResponse, IContainerResponse, ITopLevelResponseContainer<Itinerary>
     {
         internal ResponseStatus Status { get; set; }
         internal string SessionKey { get; set; }
@@ -29,5 +28,7 @@ namespace SkyScanner.Flight
         List<Place> IContainerResponse.Places => Places;
         List<LegSegment> IContainerResponse.Segments => Segments;
         List<Carrier> IContainerResponse.Carriers => Carriers;
+
+        IReadOnlyList<Itinerary> ITopLevelResponseContainer<Itinerary>.TopLevelElements => Itineraries;
     }
 }

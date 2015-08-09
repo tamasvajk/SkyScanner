@@ -2,6 +2,7 @@
 
 using System.Linq;
 using Newtonsoft.Json;
+using NodaTime;
 using SkyScanner.Data.Base;
 
 namespace SkyScanner.Data
@@ -12,9 +13,9 @@ namespace SkyScanner.Data
         internal int OriginStation { get; set; }
         internal int DestinationStation { get; set; }
         [JsonProperty("DepartureDateTime")]
-        public NodaTime.LocalDateTime DepartureTime { get; internal set; }
+        public LocalDateTime DepartureTime { get; internal set; }
         [JsonProperty("ArrivalDateTime")]
-        public NodaTime.LocalDateTime ArrivalTime { get; internal set; }
+        public LocalDateTime ArrivalTime { get; internal set; }
         /// <summary>
         /// The duration in minutes
         /// </summary>

@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkyScanner.Data;
 
 namespace SkyScanner.Test
 {
@@ -27,13 +28,13 @@ namespace SkyScanner.Test
         public async Task Default_Currency_Exists()
         {
             var currencies = await Scanner.QueryCurrency();
-            Assert.IsNotNull(currencies.SingleOrDefault(currency => currency.Code == Data.Currency.Default.Code));
+            Assert.IsNotNull(currencies.SingleOrDefault(currency => currency.Code == Currency.Default.Code));
         }
 
         [TestMethod]
         public async Task Currency_Formatter()
         {
-            Assert.AreEqual("£12.20", Data.Currency.Default.FormatValue(12.2m));
+            Assert.AreEqual("£12.20", Currency.Default.FormatValue(12.2m));
 
             var currencies = await Scanner.QueryCurrency();
             var chf = currencies.Single(currency => currency.Code == "CHF");

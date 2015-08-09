@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
+using SkyScanner.Data;
 using SkyScanner.Settings;
 
 namespace SkyScanner.Test
@@ -25,8 +26,8 @@ namespace SkyScanner.Test
 
             var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(
-                    Data.Location.FromString("MAD-sky"),
-                    Data.Location.FromString("WASA-sky"),
+                    Location.FromString("MAD-sky"),
+                    Location.FromString("WASA-sky"),
                     departureDate, departureDate.PlusDays(5)),
                 new FlightResponseSettings()));
 

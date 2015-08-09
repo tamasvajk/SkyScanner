@@ -3,11 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using NodaTime;
 using SkyScanner.Data;
 using SkyScanner.Data.Converter;
-using System.Reflection;
 using SkyScanner.Settings.Base;
 
 namespace SkyScanner.Settings

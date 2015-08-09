@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkyScanner.Data;
 
 namespace SkyScanner.Test
 {
@@ -27,7 +28,7 @@ namespace SkyScanner.Test
         public async Task Default_Locale_Exists()
         {
             var locales = await Scanner.QueryLocale();
-            Assert.IsNotNull(locales.SingleOrDefault(locale => locale.Code == Data.Locale.Default.Code));
+            Assert.IsNotNull(locales.SingleOrDefault(locale => locale.Code == Locale.Default.Code));
         }
     }
 }
