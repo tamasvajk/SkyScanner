@@ -11,7 +11,7 @@ The implemented APIs:
 
 ## Installation
 
-From the NuGet package manager console: ```Install-Package SkyScanner```
+From the [NuGet](https://www.nuget.org/packages/SkyScanner) package manager console: ```Install-Package SkyScanner```
 
 ## How to use
 
