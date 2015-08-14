@@ -40,9 +40,10 @@ namespace SkyScanner.Services.Base
                     var content = await httpResponseMessage.Content.ReadAsStringAsync();
                     var response = JsonConvert.DeserializeObject<TResponse>(content, Scanner.JsonSerializerSettings);
 
+                    this.PostProcess(response);
+
                     if (response.Succeeded)
-                    {
-                        PostProcess(response);
+                    {                        
                         return response;
                     }
 

@@ -1,22 +1,24 @@
 ﻿// Copyright (c) 2015 Tamas Vajk. All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
-using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using NodaTime;
-using SkyScanner.Booking;
-using SkyScanner.Data;
-using SkyScanner.Data.Interim;
-using SkyScanner.Services;
-using SkyScanner.Settings;
-
 namespace SkyScanner.Console
 {
-    static class Program
-    {
+    using System;
+    using System.Configuration;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using NodaTime;
+
+    using SkyScanner.Booking;
+    using SkyScanner.Data;
+    using SkyScanner.Data.Interim;
+    using SkyScanner.Services;
+    using SkyScanner.Settings;
+
+    static class Program {
         static void Main()
         {
             WriteLine("Detailed search:");
@@ -195,10 +197,24 @@ namespace SkyScanner.Console
         }
 
         private static Action<InterimChangeSet<Itinerary>> WriteToDebug()
-        {            
-            return list => Debug.WriteLine($"Interim results recieved ! {list.All.Count()} "
-                                        + $"total itineraries, {list.Additions.Count()} new "
-                                        + $"and {list.Updates.Count()} updates");
+        {
+            return WriteToDebug;
+        }
+
+        private static void WriteToDebug(InterimChangeSet<Itinerary> list)
+        {
+            try
+            {
+                var leg = list.All.First().OutboundLeg;                                
+            }
+            catch(Exception e)
+            {
+                throw new InvalidDataException("The interim result contains legs that are NULL - this should not happen");
+            }
+            
+            Debug.WriteLine($"Interim results recieved ! {list.All.Count()} "
+                                       + $"total itineraries, {list.Additions.Count()} new "
+                                       + $"and {list.Updates.Count()} updates");
         }
 
         private static void WriteBookingResult(BookingResponse response, Currency currentCurrency)
