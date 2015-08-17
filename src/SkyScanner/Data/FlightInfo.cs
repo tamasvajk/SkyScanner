@@ -7,7 +7,7 @@ namespace SkyScanner.Data
 {
     public class FlightInfo
     {
-        public int FlightNumber { get; internal set; }
+        public string FlightNumber { get; internal set; }
         internal int CarrierId { get; set; }
         internal IContainerResponse ContainerResponse { get; set; }
         public Carrier Carrier {

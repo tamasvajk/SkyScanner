@@ -31,7 +31,7 @@ namespace SkyScanner.Data
             ContainerResponse = ContainerResponse
         };
 
-        internal int FlightNumber { get; set; }
+        internal string FlightNumber { get; set; }
         [JsonProperty("Carrier")]
         internal int CarrierId { get; set; }
         [JsonIgnore]
