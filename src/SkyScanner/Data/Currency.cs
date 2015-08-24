@@ -67,5 +67,15 @@ namespace SkyScanner.Data
 
             return string.Join("", parts);
         }
+
+        /// <summary>
+        /// Instantiates a new currency with the provided currency code.
+        /// </summary>
+        /// <param name="code">The currency code. E.g. EUR, GBP, CHF.</param>
+        /// <returns>The currency for the provided code</returns>
+        public static Currency FromCode(string code)
+        {
+            return new Currency() { Code = code };
+        }
     }
 }
