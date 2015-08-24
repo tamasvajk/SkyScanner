@@ -25,5 +25,15 @@ namespace SkyScanner.Data
         { 
             return Code;
         }
+
+        /// <summary>
+        /// Instantiates a new Market for the provided market code
+        /// </summary>
+        /// <param name="code">The market code. E.g. UK</param>
+        /// <returns>The market instance for the given code</returns>
+        public static Market FromCode(string code)
+        {
+            return new Market() { Code = code };
+        }
     }
 }
