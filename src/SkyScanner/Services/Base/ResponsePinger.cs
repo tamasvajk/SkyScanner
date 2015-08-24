@@ -41,13 +41,12 @@ namespace SkyScanner.Services.Base
                     var response = JsonConvert.DeserializeObject<TResponse>(content, Scanner.JsonSerializerSettings);
 
                     this.PostProcess(response);
+                    this.OnInterimResultsRecieved?.Invoke(this, response);
 
                     if (response.Succeeded)
                     {                        
                         return response;
                     }
-
-                    OnInterimResultsRecieved?.Invoke(this, response);
 
                     throw new RetryResponsePingException();
                 case HttpStatusCode.NoContent:

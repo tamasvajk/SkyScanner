@@ -7,13 +7,15 @@ using SkyScanner.Services.Interfaces;
 
 namespace SkyScanner.Services.Helpers
 {
+    using SkyScanner.Data.Base;
+
     /// <summary>
     /// This type is an implementation of IInterimResultHandler that keeps track of what's been
     /// handled previously and it will use this state to compare new flightresponses and find
     /// only the new and updated itineraries.
     /// </summary>
     internal class InterimResultProvider<TResponse, TResponseEntity> : IInterimResultProvider<TResponse, TResponseEntity>
-        where TResponse : class, ITopLevelResponseContainer<TResponseEntity>
+        where TResponse : class, ITopLevelResponseContainer<TResponseEntity>, IPingResponse
         where TResponseEntity : class, IInterimEquatable<TResponseEntity>
     {
         /// <summary>
@@ -30,7 +32,7 @@ namespace SkyScanner.Services.Helpers
             {
                 // In case the lastresponse == null, in other words, this
                 // is the first time Handle is called - the full response is returned
-                result = new InterimChangeSet<TResponseEntity>(newTopLevelElements, null, null);
+                result = new InterimChangeSet<TResponseEntity>(newTopLevelElements, null, null, response.Succeeded);
                 Debug.WriteLine($"Diff called for first time - with {newTopLevelElements.Count} top level elements");
             }
             else
@@ -75,7 +77,7 @@ namespace SkyScanner.Services.Helpers
 
                 mergedTopLevelElements.AddRange(unchanged.Select(element => element.Original));
 
-                result = new InterimChangeSet<TResponseEntity>(mergedTopLevelElements, additions, updates);
+                result = new InterimChangeSet<TResponseEntity>(mergedTopLevelElements, additions, updates, response.Succeeded);
             }
 
             _lastResponse = response;

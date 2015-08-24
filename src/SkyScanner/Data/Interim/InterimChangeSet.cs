@@ -10,6 +10,11 @@ namespace SkyScanner.Data.Interim
     public class InterimChangeSet<T>
     {
         /// <summary>
+        /// Indicates whether this chagneset will be the last changeset - i.e. all the data is present and the polling is done
+        /// </summary>
+        public bool IsLastChangeSet { get; private set; }
+
+        /// <summary>
         /// All items recieved thusfar
         /// </summary>
         public IEnumerable<T> All { get; private set; }
@@ -30,11 +35,14 @@ namespace SkyScanner.Data.Interim
         /// <param name="all">All the items that were recieved thusfar</param>
         /// <param name="additions">New additions - compared to the previous event</param>
         /// <param name="updated">Updated itineraries - compared to the previous event</param>
-        public InterimChangeSet(IEnumerable<T> all, IEnumerable<T> additions, IEnumerable<InterimPair<T>> updated)
+        /// <param name="isLastChangeSet">Indicates whether this chagneset will be the last changeset - i.e. all the data is present
+        /// and the polling is done</param>
+        public InterimChangeSet(IEnumerable<T> all, IEnumerable<T> additions, IEnumerable<InterimPair<T>> updated, bool isLastChangeSet)
         {
             All = all ?? new List<T>();
             Additions = additions ?? new List<T>();
             Updates = updated ?? new List<InterimPair<T>>();
+            IsLastChangeSet = isLastChangeSet;
         }
     }
 }

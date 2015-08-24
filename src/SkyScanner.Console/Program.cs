@@ -214,7 +214,7 @@ namespace SkyScanner.Console
             
             Debug.WriteLine($"Interim results recieved ! {list.All.Count()} "
                                        + $"total itineraries, {list.Additions.Count()} new "
-                                       + $"and {list.Updates.Count()} updates");
+                                       + $"and {list.Updates.Count()} updates. IsLast? " + list.IsLastChangeSet);
         }
 
         private static void WriteBookingResult(BookingResponse response, Currency currentCurrency)
