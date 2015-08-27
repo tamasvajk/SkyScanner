@@ -1,5 +1,6 @@
 // Copyright (c) 2015 Tamas Vajk. All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -18,16 +19,8 @@ namespace SkyScanner.Services.Base
         /// <summary>
         /// The OnInterimResultsRecieved fires when interim results become available from the SkyScanner API
         /// </summary>
-        internal event InterimResultsRecieved<TResponse> OnInterimResultsRecieved;
-
-        /// <summary>
-        /// The InterimResultsRecieved delegate
-        /// </summary>
-        /// <typeparam name="T">The type of interim results</typeparam>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="args">The currently available results</param>
-        internal delegate void InterimResultsRecieved<in T>(object sender, T args);
-
+        internal event EventHandler<TResponse> OnInterimResultsRecieved;
+        
         protected ResponsePinger(string apiKey) : base(apiKey, 1000)
         {
         }
