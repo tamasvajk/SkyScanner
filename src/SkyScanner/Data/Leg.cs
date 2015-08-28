@@ -46,9 +46,8 @@ namespace SkyScanner.Data
         {
             get
             {
-                return FlightResponse.Segments
-                    .Where(segment => SegmentIds.Contains(segment.Id))
-                    .OrderBy(segment => segment.DepartureTime)
+                return SegmentIds
+                    .Select(id => FlightResponse.Segments.SingleOrDefault(s => s.Id == id))
                     .ToList();
             }
         }
@@ -57,8 +56,8 @@ namespace SkyScanner.Data
         {
             get
             {
-                return FlightResponse.Carriers
-                    .Where(carrier => CarrierIds.Contains(carrier.Id))
+                return CarrierIds
+                    .Select(id => FlightResponse.Carriers.SingleOrDefault(c => c.Id == id))
                     .ToList();
             }
         }
@@ -67,8 +66,8 @@ namespace SkyScanner.Data
         {
             get
             {
-                return FlightResponse.Carriers
-                    .Where(carrier => OperatingCarrierIds.Contains(carrier.Id))
+                return OperatingCarrierIds
+                    .Select(id => FlightResponse.Carriers.SingleOrDefault(c => c.Id == id))
                     .ToList();
             }
         }
@@ -85,7 +84,7 @@ namespace SkyScanner.Data
         [JsonIgnore]
         public List<Place> Stops
         {
-            get { return FlightResponse.Places.Where(place => StopIds.Contains(place.Id)).ToList(); }
+            get { return StopIds.Select(id => FlightResponse.Places.SingleOrDefault(pl => pl.Id == id)).ToList(); }
         }
     }
 }

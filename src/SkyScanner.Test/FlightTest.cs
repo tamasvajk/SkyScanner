@@ -135,7 +135,7 @@ namespace SkyScanner.Test
             var inboundDepartureStartTime = new LocalTime(8, 0, 0);
             var inboundDepartureEndTime = new LocalTime(18, 30, 0);
             const int maxStops = 2;
-            const int maxDuration = 22 * 60;
+            const int maxDuration = 30 * 60;
 
             var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
                 new FlightRequestSettings(

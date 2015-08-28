@@ -57,8 +57,8 @@ namespace SkyScanner.Data
         {
             get
             {
-                return ContainerResponse.Segments.Where(segment => SegmentIds.Contains(segment.Id))
-                    .OrderBy(segment => segment.DepartureTime)
+                return SegmentIds
+                    .Select(id => ContainerResponse.Segments.SingleOrDefault(s => s.Id == id))
                     .ToList();
             }
         }

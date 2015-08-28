@@ -37,7 +37,12 @@ namespace SkyScanner.Data
         [JsonIgnore]
         public List<Agent> Agents
         {
-            get { return FlightResponse.Agents.Where(agent => AgentIds.Contains(agent.Id)).ToList(); }
+            get
+            {
+                return AgentIds
+                    .Select(id => FlightResponse.Agents.SingleOrDefault(agent => agent.Id == id))
+                    .ToList();
+            }
         }
 
         public PricingOption()
