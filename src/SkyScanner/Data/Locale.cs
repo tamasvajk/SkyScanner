@@ -2,6 +2,8 @@
 
 namespace SkyScanner.Data
 {
+    using System.CodeDom;
+
     /// <summary>
     /// Localization supported by Skyscanner
     /// </summary>
@@ -21,6 +23,17 @@ namespace SkyScanner.Data
         public override string ToString()
         {
             return Code;
+        }
+
+        /// <summary>
+        /// Instantiates a new locale - from the given locale code and name
+        /// </summary>
+        /// <param name="code">The valid locale code. E.g. 'en-GB'</param>
+        /// <param name="name">The locale name. E.g. 'English'</param>
+        /// <returns>The locale instance with the given parameters</returns>
+        public static Locale FromString(string code, string name)
+        {
+            return new Locale() { Code = code, Name = name };
         }
     }
 }
