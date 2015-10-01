@@ -56,6 +56,7 @@
     <Compile Include="..\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
+    <Compile Include="Booking\BookingResponseBase.cs" />
     <Compile Include="Data\Comparison\IInterimEquatable.cs" />
     <Compile Include="Data\Comparison\ShallowEqualityComparer.cs" />
     <Compile Include="Data\Interim\InterimPair.cs" />
@@ -101,6 +102,8 @@
     <Compile Include="Services\Booking.cs" />
     <Compile Include="Booking\BookingResponse.cs" />
     <Compile Include="Booking\BookingResponsePinger.cs" />
+    <Compile Include="Settings\BookingRequestSettingsBase.cs" />
+    <Compile Include="Settings\BookingResponseSettingsBase.cs" />
     <Compile Include="Settings\IExecutionStrategy.cs" />
     <Compile Include="Settings\DefaultExecutionStrategy.cs" />
     <Compile Include="Settings\LocationAutosuggestQueryType.cs" />

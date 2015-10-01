@@ -33,7 +33,7 @@ namespace SkyScanner.Console
             var scanner = new Scanner(ConfigurationManager.AppSettings["apiKey"]);
             var from = (await scanner.QueryLocation("London")).First();
             var to = (await scanner.QueryLocation("New York")).First();
-            
+
             var now = new LocalDate(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var outboundDate = now.PlusWeeks(1);
             var inboundDate = now.PlusWeeks(2);
@@ -42,7 +42,7 @@ namespace SkyScanner.Console
             var itineraries = await scanner.QueryFlight(
                 new FlightQuerySettings(
                     new FlightRequestSettings(from, to, outboundDate, inboundDate),
-                    new FlightResponseSettings(SortType.Price, SortOrder.Ascending)), 
+                    new FlightResponseSettings(SortType.Price, SortOrder.Ascending)),
                 WriteToDebug());
 
             itineraries = itineraries
@@ -75,7 +75,7 @@ namespace SkyScanner.Console
                 WriteBookingResult(response, Currency.Default);
             }
         }
-        
+
         private static async Task SearchDetailed()
         {
             //Initialize Scanner
@@ -112,7 +112,7 @@ namespace SkyScanner.Console
                 WriteLine(ErrorColor, "Couldn't find currency, using default instead");
                 currentCurrency = Currency.Default;
             }
-            
+
             //Query location
             const string fromPlaceName = "London";
             var from = (await scanner.QueryLocation(new LocationAutosuggestSettings(fromPlaceName,
@@ -157,7 +157,7 @@ namespace SkyScanner.Console
             Write(ImportantColor, outboundDate.ToString("d", CultureInfo.InvariantCulture));
             Write(" and back on ");
             WriteLine(ImportantColor, inboundDate.ToString("d", CultureInfo.InvariantCulture));
-            
+
             //Query flights
             var itineraries = await scanner.QueryFlight(
                 new FlightQuerySettings(
@@ -205,13 +205,13 @@ namespace SkyScanner.Console
         {
             try
             {
-                var leg = list.All.First().OutboundLeg;                                
+                var leg = list.All.First().OutboundLeg;
             }
             catch(Exception e)
             {
                 throw new InvalidDataException("The interim result contains legs that are NULL - this should not happen");
             }
-            
+
             Debug.WriteLine($"Interim results recieved ! {list.All.Count()} "
                                        + $"total itineraries, {list.Additions.Count()} new "
                                        + $"and {list.Updates.Count()} updates. IsLast? " + list.IsLastChangeSet);
@@ -258,7 +258,7 @@ namespace SkyScanner.Console
         }
 
         #region Write helpers
-        
+
         private static void Write(ConsoleColor color, string format, params object[] arg)
         {
             var prevConsoleColor = System.Console.ForegroundColor;
@@ -287,7 +287,7 @@ namespace SkyScanner.Console
                 WriteLine("----------------------------------------------");
             }
         }
-        
+
         private const ConsoleColor ErrorColor = ConsoleColor.Red;
         private const ConsoleColor ImportantColor = ConsoleColor.Green;
 

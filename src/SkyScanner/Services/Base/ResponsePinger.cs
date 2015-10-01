@@ -36,7 +36,7 @@ namespace SkyScanner.Services.Base
                     var content = await httpResponseMessage.Content.ReadAsStringAsync();
                     var response = JsonConvert.DeserializeObject<TResponse>(content, Scanner.JsonSerializerSettings);
 
-                    this.PostProcess(response);
+                    response = PostProcess(response, content);
                     this.OnInterimResultsRecieved?.Invoke(this, response);
 
                     if (response.Succeeded)
@@ -57,7 +57,7 @@ namespace SkyScanner.Services.Base
             }
         }
 
-        protected abstract void PostProcess(TResponse response);
+        protected abstract TResponse PostProcess(TResponse response, string rawContent);
 
         protected string GetQueryString(PingResponseSettings settings)
         {

@@ -6,32 +6,25 @@ using SkyScanner.Settings.Base;
 
 namespace SkyScanner.Settings
 {
-    internal class BookingRequestSettings : RequestSettings
+    internal class BookingRequestSettings : BookingRequestSettingsBase
     {
         public BookingRequestSettings(string sessionKey, Itinerary itinerary)
+            : base(sessionKey)
         {
-            SessionKey = sessionKey;
             Itinerary = itinerary;
         }
 
         [JsonIgnore]
-        internal string SessionKey { get; }
-
-        [JsonIgnore]
         public Itinerary Itinerary { get; }
 
-        internal string OutboundLegId => OutboundLeg?.Id;
+        internal override string OutboundLegId => OutboundLeg?.Id;
 
-        internal string InboundLegId => InboundLeg?.Id;
+        internal override string InboundLegId => InboundLeg?.Id;
 
         [JsonIgnore]
         public Leg OutboundLeg => Itinerary.OutboundLeg;
 
         [JsonIgnore]
         public Leg InboundLeg => Itinerary.InboundLeg;
-
-        public int? Adults { get; set; }
-        public int? Children { get; set; }
-        public int? Infants { get; set; }
     }
 }

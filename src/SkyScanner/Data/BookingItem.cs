@@ -20,7 +20,7 @@ namespace SkyScanner.Data
         /// </summary>
         public decimal Price { get; internal set; }
         /// <summary>
-        /// The price in the currency of the first segment. 
+        /// The price in the currency of the first segment.
         /// This is only set if the currency of the country of origin is different from the currency specified in the query.
         /// </summary>
         public decimal AlternativePrice { get; internal set; }
@@ -43,10 +43,11 @@ namespace SkyScanner.Data
         [JsonIgnore]
         public Agent Agent
         {
-            get { return FlightResponse.Agents.FirstOrDefault(agent => AgentId == agent.Id); }
+            get { return FlightResponse?.Agents.FirstOrDefault(agent => AgentId == agent.Id); }
         }
         [JsonIgnore]
-        internal FlightResponse FlightResponse { get; set; }
+        internal FlightResponse FlightResponse => (ContainerResponse as Booking.BookingResponse)?.Itinerary.FlightResponse;
+
         [JsonIgnore]
         internal IContainerResponse ContainerResponse { get; set; }
         /// <summary>

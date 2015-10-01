@@ -7,21 +7,18 @@ using SkyScanner.Settings.Base;
 
 namespace SkyScanner.Settings
 {
-    internal class BookingResponseSettings : BookingResponseSettingsBase
+    internal class BookingResponseSettingsBase : PingResponseSettings
     {
-        public BookingResponseSettings(Itinerary itinerary,
+        public BookingResponseSettingsBase(
             CarrierSchema carrierSchema = CarrierSchema.Iata,
             LocationSchema locationSchema = LocationSchema.Iata)
-            : base(carrierSchema, locationSchema)
         {
-            FlightResponse = itinerary.FlightResponse;
-            Itinerary = itinerary;
+            CarrierSchema = carrierSchema;
+            LocationSchema = locationSchema;
         }
 
-        [JsonIgnore]
-        internal FlightResponse FlightResponse { get; }
+        public LocationSchema LocationSchema { get; }
 
-        [JsonIgnore]
-        internal Itinerary Itinerary { get; }
+        internal CarrierSchema CarrierSchema { get; }
     }
 }

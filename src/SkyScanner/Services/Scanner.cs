@@ -73,14 +73,14 @@ namespace SkyScanner.Services
         /// <param name="flightQuerySettings">Settings for the query</param>
         /// <param name="interimResultCallback">The callback that is called when interim results are recieved</param>
         /// <returns>The collection of itineraries from SkyScanner</returns>
-        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings,
+        public async Task<List<Itinerary>> QueryFlight(
+            FlightQuerySettings flightQuerySettings,
             Action<InterimChangeSet<Itinerary>> interimResultCallback,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var interimResultHandler = new InterimResultProvider<FlightResponse, Itinerary>();
 
             var flightService = new Flight(_apiKey, flightQuerySettings);
-
             return await _executionStrategy.Execute(async () =>
             {
                 var pinger = await flightService.SendQuery(cancellationToken);
@@ -117,6 +117,24 @@ namespace SkyScanner.Services
                 new BookingRequestSettings(itinerary.FlightResponse.SessionKey, itinerary),
                 itinerary);
 
+            return (BookingResponse)await QueryBooking(settings);
+        }
+        public async Task<BookingResponseBase> QueryBooking(string sessionKey,
+            string outboundLegId, string inboundLegId,
+            CarrierSchema carrierSchema = CarrierSchema.Iata,
+            LocationSchema locationSchema = LocationSchema.Iata,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var settings = new BookingQuerySettings(
+                new BookingRequestSettingsBase(sessionKey, outboundLegId, inboundLegId),
+                carrierSchema, locationSchema);
+
+            return await QueryBooking(settings, cancellationToken);
+        }
+
+        private async Task<BookingResponseBase> QueryBooking(BookingQuerySettings settings,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
             var bookingService = new Booking(_apiKey, settings);
             return await _executionStrategy.Execute(async () =>
             {
@@ -154,8 +172,9 @@ namespace SkyScanner.Services
         public async Task<List<Location>> QueryLocation(string query,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryData<LocationAutosuggest, Location>(new LocationAutosuggest(_apiKey,
-                new LocationAutosuggestSettings(query)), cancellationToken);
+            return await QueryData<LocationAutosuggest, Location>(
+                new LocationAutosuggest(_apiKey, new LocationAutosuggestSettings(query)),
+                cancellationToken);
         }
         /// <summary>
         /// The location autosuggest service can be used to get a list of places (with corresponding IDs) that

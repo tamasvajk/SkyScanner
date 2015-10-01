@@ -33,6 +33,11 @@ namespace SkyScanner.Data
             }
         }
         [JsonIgnore]
+        public string SessionKey
+        {
+            get { return FlightResponse.SessionKey; }
+        }
+        [JsonIgnore]
         public Leg OutboundLeg
         {
             get { return FlightResponse.Legs.FirstOrDefault(leg => leg.Id == OutboundLegId); }
@@ -42,10 +47,10 @@ namespace SkyScanner.Data
         {
             get { return FlightResponse.Legs.FirstOrDefault(leg => leg.Id == InboundLegId); }
         }
-        
+
         bool IInterimEquatable<Itinerary>.ShallowEquals(Itinerary other)
         {
-            return InboundLegId == other.InboundLegId && 
+            return InboundLegId == other.InboundLegId &&
                 OutboundLegId == other.OutboundLegId;
         }
 
@@ -62,8 +67,8 @@ namespace SkyScanner.Data
 
         bool IInterimEquatable<Itinerary>.DeepEquals(Itinerary other)
         {
-            return InboundLegId == other.InboundLegId && 
-                OutboundLegId == other.OutboundLegId && 
+            return InboundLegId == other.InboundLegId &&
+                OutboundLegId == other.OutboundLegId &&
                 PricingOptions.Count == other.PricingOptions.Count;
         }
     }

@@ -18,6 +18,11 @@ namespace SkyScanner.Services.Interfaces
             CancellationToken cancellationToken = default(CancellationToken));
         Task<BookingResponse> QueryBooking(Itinerary itinerary,
             CancellationToken cancellationToken = default(CancellationToken));
+        Task<BookingResponseBase> QueryBooking(string sessionKey,
+            string outboundLegId, string inboundLegId,
+            CarrierSchema carrierSchema = CarrierSchema.Iata,
+            LocationSchema locationSchema = LocationSchema.Iata,
+            CancellationToken cancellationToken = default(CancellationToken));
         Task<List<Data.Currency>> QueryCurrency(CancellationToken cancellationToken = default(CancellationToken));
         Task<List<Data.Market>> QueryMarket(Data.Locale locale,
             CancellationToken cancellationToken = default(CancellationToken));

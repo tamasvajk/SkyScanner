@@ -187,7 +187,11 @@ namespace SkyScanner.Test
                     inboundDepartureStartTime: inboundDepartureStartTime,
                     inboundDepartureEndTime: inboundDepartureEndTime)));
 
-            Assert.IsTrue(itineraries.Count > 0);
+            if (itineraries.Count == 0)
+            {
+                Assert.Inconclusive("No itineraries found");
+                return;
+            }
 
             foreach (var itinerary in itineraries)
             {

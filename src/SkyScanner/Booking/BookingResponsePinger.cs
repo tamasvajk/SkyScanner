@@ -9,34 +9,45 @@ using System.Threading;
 
 namespace SkyScanner.Booking
 {
-    internal class BookingResponsePinger : ResponsePinger<BookingResponse>
+    internal class BookingResponsePinger : ResponsePinger<BookingResponseBase>
     {
         private readonly Uri _location;
-        private readonly BookingResponseSettings _bookingResponseSettings;
+        private readonly BookingResponseSettingsBase _bookingResponseSettings;
         private readonly string _querySettings;
-        public BookingResponsePinger(string apiKey, Uri sessionUri, BookingResponseSettings bookingResponseSettings)
-            :base(apiKey)
+
+        public BookingResponsePinger(string apiKey, Uri sessionUri,
+            BookingResponseSettingsBase bookingResponseSettings)
+            : base(apiKey)
         {
             _location = sessionUri;
             _bookingResponseSettings = bookingResponseSettings;
             _querySettings = GetQueryString(bookingResponseSettings);
         }
-        
+
         protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
             get { return (client, token) => client.GetAsync($"{_location.AbsoluteUri}?{_querySettings}", token); }
         }
-        
-        protected override void PostProcess(BookingResponse response)
+
+        protected override BookingResponseBase PostProcess(BookingResponseBase response, string rawContent)
         {
-            response.Segments.ForEach(segment => { segment.ContainerResponse = response; });
-            response.Places.ForEach(place => { place.ContainerResponse = response; });
+            var bookingResponseSettings = _bookingResponseSettings as BookingResponseSettings;
+            var newResponse = bookingResponseSettings != null
+                ? new BookingResponse(response)
+                {
+                    Itinerary = bookingResponseSettings.Itinerary
+                }
+                : response;
+
+            response.Segments.ForEach(segment => { segment.ContainerResponse = newResponse; });
+            response.Places.ForEach(place => { place.ContainerResponse = newResponse; });
+
             response.BookingOptions.ForEach(option => option.BookingItems.ForEach(item =>
             {
-                item.ContainerResponse = response;
-                item.FlightResponse = _bookingResponseSettings.FlightResponse;
+                item.ContainerResponse = newResponse;
             }));
-            response.Itinerary = _bookingResponseSettings.Itinerary;
+
+            return newResponse;
         }
     }
 }

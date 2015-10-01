@@ -6,14 +6,22 @@ namespace SkyScanner.Settings
 {
     internal class BookingQuerySettings
     {
-        public BookingQuerySettings(BookingRequestSettings requestSettings, Itinerary itinerary)
+        public BookingQuerySettings(BookingRequestSettingsBase requestSettings,
+            CarrierSchema carrierSchema = CarrierSchema.Iata,
+            LocationSchema locationSchema = LocationSchema.Iata)
         {
             BookingRequest = requestSettings;
+            BookingResponse = new BookingResponseSettingsBase(carrierSchema, locationSchema);
+        }
+
+        public BookingQuerySettings(BookingRequestSettingsBase requestSettings,
+            Itinerary itinerary)
+            : this(requestSettings)
+        {
             BookingResponse = new BookingResponseSettings(itinerary);
         }
 
-        public BookingRequestSettings BookingRequest { get; }
-
-        public BookingResponseSettings BookingResponse { get; }
+        public BookingRequestSettingsBase BookingRequest { get; }
+        public BookingResponseSettingsBase BookingResponse { get; }
     }
 }

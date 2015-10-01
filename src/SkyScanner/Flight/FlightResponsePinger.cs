@@ -26,12 +26,13 @@ namespace SkyScanner.Flight
             get { return (client, token) => client.GetAsync($"{_location.AbsoluteUri}?{_querySettings}", token); }
         }
 
-        protected override void PostProcess(FlightResponse response)
+        protected override FlightResponse PostProcess(FlightResponse response, string rawContent)
         {
             response.Itineraries.ForEach(itinerary => { itinerary.FlightResponse = response; });
             response.Legs.ForEach(leg => { leg.FlightResponse = response; });
             response.Segments.ForEach(segment => { segment.ContainerResponse = response; });
             response.Places.ForEach(place => { place.ContainerResponse = response; });
+            return response;
         }
     }
 }

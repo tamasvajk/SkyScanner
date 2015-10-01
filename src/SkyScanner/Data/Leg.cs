@@ -10,7 +10,7 @@ namespace SkyScanner.Data
 {
     public class Leg
     {
-        internal string Id { get; set; }
+        public string Id { get; internal set; }
         internal int OriginStation { get; set; }
         internal int DestinationStation { get; set; }
         [JsonProperty("Departure")]

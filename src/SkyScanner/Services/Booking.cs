@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace SkyScanner.Services
 {
-    internal class Booking : RequesterWithPing<BookingResponse>
+    internal class Booking : RequesterWithPing<BookingResponseBase>
     {
         private readonly BookingQuerySettings _querySettings;
 
@@ -19,7 +19,7 @@ namespace SkyScanner.Services
         {
             _querySettings = querySettings;
         }
-        
+
         protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
             get
@@ -30,7 +30,7 @@ namespace SkyScanner.Services
             }
         }
 
-        protected override ResponsePinger<BookingResponse> CreatePinger(Uri sessionUri)
+        protected override ResponsePinger<BookingResponseBase> CreatePinger(Uri sessionUri)
         {
             return new BookingResponsePinger(ApiKey, sessionUri, _querySettings.BookingResponse);
         }
