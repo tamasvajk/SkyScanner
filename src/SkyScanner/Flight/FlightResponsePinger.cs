@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using SkyScanner.Services.Base;
 using SkyScanner.Settings;
+using System.Threading;
 
 namespace SkyScanner.Flight
 {
@@ -20,11 +21,11 @@ namespace SkyScanner.Flight
             _querySettings = GetQueryString(flightResponseSettings);
         }
 
-        protected override Func<HttpClient, Task<HttpResponseMessage>> HttpMethod
+        protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
-            get { return client => client.GetAsync($"{_location.AbsoluteUri}?{_querySettings}"); }
+            get { return (client, token) => client.GetAsync($"{_location.AbsoluteUri}?{_querySettings}", token); }
         }
-        
+
         protected override void PostProcess(FlightResponse response)
         {
             response.Itineraries.ForEach(itinerary => { itinerary.FlightResponse = response; });

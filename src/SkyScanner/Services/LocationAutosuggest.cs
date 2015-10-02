@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using SkyScanner.Data;
 using SkyScanner.Services.Base;
 using SkyScanner.Settings;
+using System.Threading;
 
 namespace SkyScanner.Services
 {
@@ -21,14 +22,15 @@ namespace SkyScanner.Services
             _settings = settings;
         }
 
-        protected override Func<HttpClient, Task<HttpResponseMessage>> HttpMethod
+        protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
             get
             {
-                return client => client.GetAsync(
+                return (client, token) => client.GetAsync(
                     string.Format(
                         "http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/{0}/{1}/{2}/?{5}={3}&apiKey={4}",
-                        _settings.Market, _settings.Currency, _settings.Locale, _settings.Query, ApiKey, _settings.QueryType.ToString().ToLower()));
+                        _settings.Market, _settings.Currency, _settings.Locale, _settings.Query, ApiKey, _settings.QueryType.ToString().ToLower()),
+                    token);
             }
         }
 

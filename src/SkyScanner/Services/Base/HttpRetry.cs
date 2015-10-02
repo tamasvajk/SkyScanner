@@ -9,6 +9,7 @@ using SkyScanner.Exceptions;
 using SkyScanner.Services.Helpers;
 using SkyScanner.Services.Interfaces;
 using Exception = SkyScanner.Exceptions.Exception;
+using System.Threading;
 
 namespace SkyScanner.Services.Base
 {
@@ -18,7 +19,7 @@ namespace SkyScanner.Services.Base
         private readonly int _initialDelay;
 
         protected readonly string ApiKey;
-        protected abstract Func<HttpClient, Task<HttpResponseMessage>> HttpMethod { get; }
+        protected abstract Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod { get; }
 
         private readonly ITaskDelayGenerator _delayGenerator = new IncreasingIntervalGenerator();
 
@@ -30,27 +31,32 @@ namespace SkyScanner.Services.Base
 
         protected virtual Duration RetryTimeSpan => Duration.FromSeconds(1);
 
-        public async Task<TResponse> SendQuery()
+        public async Task<TResponse> SendQuery(CancellationToken cancellationToken)
         {
             await Task.Delay(_initialDelay);
 
             return await Retry.Do<TResponse, TException>(
                 async () =>
                     {
-                        await Task.Delay(_delayGenerator.NextInterval);
+                        await Task.Delay(_delayGenerator.NextInterval, cancellationToken);
+
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            throw new OperationCanceledException(cancellationToken);
+                        }
 
                         using (var client = new HttpClient())
                         {
                             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type","application/x-www-form-urlencoded");
                             client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "application/json");
-                            var httpResponseMessage = await HttpMethod(client);
-                            return await HandleResponse(httpResponseMessage);
+                            var httpResponseMessage = await HttpMethod(client, cancellationToken);
+                            return await HandleResponse(httpResponseMessage, cancellationToken);
                         }
                     },
                 RetryTimeSpan);
         }
 
-        protected virtual Task<TResponse> HandleResponse(HttpResponseMessage httpResponseMessage)
+        protected virtual Task<TResponse> HandleResponse(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
         {
             switch (httpResponseMessage.StatusCode)
             {

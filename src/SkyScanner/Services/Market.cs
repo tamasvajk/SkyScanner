@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SkyScanner.Services.Base;
+using System.Threading;
 
 namespace SkyScanner.Services
 {
@@ -18,12 +19,13 @@ namespace SkyScanner.Services
             _locale = locale;
         }
 
-        protected override Func<HttpClient, Task<HttpResponseMessage>> HttpMethod
+        protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
             get
             {
-                return client => client.GetAsync(
-                    $"http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/{_locale}?apiKey={ApiKey}");
+                return (client, token) => client.GetAsync(
+                    $"http://partners.api.skyscanner.net/apiservices/reference/v1.0/countries/{_locale}?apiKey={ApiKey}",
+                    token);
             }
         }
 

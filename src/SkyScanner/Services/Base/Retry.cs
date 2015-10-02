@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using NodaTime;
+using System.Threading;
 
 namespace SkyScanner.Services.Base
 {
@@ -18,8 +19,9 @@ namespace SkyScanner.Services.Base
         /// <param name="retryCountOnExpectedException">Number of retries upon any (expected and unexpected) exceptions</param>
         /// <param name="retryCountOnGenericException">Number of retries upon unexpected exceptions</param>
         /// <returns>Result of the function</returns>
-        public static async Task<T> Do<T, TExpectedException>(Func<Task<T>> func, Duration retryInterval, 
-            int retryCountOnExpectedException = -1, int retryCountOnGenericException = 0) 
+        public static async Task<T> Do<T, TExpectedException>(Func<Task<T>> func, Duration retryInterval,
+            int retryCountOnExpectedException = -1, int retryCountOnGenericException = 0,
+            CancellationToken cancellationToken = default(CancellationToken))
             where TExpectedException : Exception
         {
             Exception lastException = null;
@@ -29,6 +31,11 @@ namespace SkyScanner.Services.Base
             while ((retryCountOnGenericException == -1 || genericExceptionCount <= retryCountOnGenericException) &&
                    (retryCountOnExpectedException == -1 || expectedExceptionCount <= retryCountOnExpectedException))
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(cancellationToken);
+                }
+
                 try
                 {
                     return await func();
@@ -43,6 +50,10 @@ namespace SkyScanner.Services.Base
                     }
                 }
                 catch (Exceptions.Exception)
+                {
+                    throw;
+                }
+                catch (OperationCanceledException)
                 {
                     throw;
                 }

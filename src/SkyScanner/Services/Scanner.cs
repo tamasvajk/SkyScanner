@@ -17,6 +17,7 @@ using SkyScanner.Services.Base;
 using SkyScanner.Services.Helpers;
 using SkyScanner.Services.Interfaces;
 using SkyScanner.Settings;
+using System.Threading;
 
 namespace SkyScanner.Services
 {
@@ -53,7 +54,7 @@ namespace SkyScanner.Services
             _apiKey = apiKey;
             _executionStrategy = executionStrategy;
         }
-        
+
         internal static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new SkyScannerContractResolver(),
@@ -66,13 +67,15 @@ namespace SkyScanner.Services
         }.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
 
         /// <summary>
-        /// The Live Pricing Service (flight query) returns all the flights available for a specific route and 
+        /// The Live Pricing Service (flight query) returns all the flights available for a specific route and
         /// date (or single date for one-way searches).
         /// </summary>
         /// <param name="flightQuerySettings">Settings for the query</param>
         /// <param name="interimResultCallback">The callback that is called when interim results are recieved</param>
         /// <returns>The collection of itineraries from SkyScanner</returns>
-        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings, Action<InterimChangeSet<Itinerary>> interimResultCallback)
+        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings,
+            Action<InterimChangeSet<Itinerary>> interimResultCallback,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var interimResultHandler = new InterimResultProvider<FlightResponse, Itinerary>();
 
@@ -80,7 +83,7 @@ namespace SkyScanner.Services
 
             return await _executionStrategy.Execute(async () =>
             {
-                var pinger = await flightService.SendQuery();
+                var pinger = await flightService.SendQuery(cancellationToken);
 
                 if (interimResultCallback != null)
                 {
@@ -90,23 +93,25 @@ namespace SkyScanner.Services
                         };
                 }
 
-                var response = await pinger.SendQuery();
+                var response = await pinger.SendQuery(cancellationToken);
                 return response.Itineraries;
-            });
+            }, cancellationToken);
         }
 
-        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings)
+        public async Task<List<Itinerary>> QueryFlight(FlightQuerySettings flightQuerySettings,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryFlight(flightQuerySettings, null);
+            return await QueryFlight(flightQuerySettings, null, cancellationToken);
         }
 
         /// <summary>
-        /// The Booking Details service can be used to drill down into an itinerary and get its full details, including 
+        /// The Booking Details service can be used to drill down into an itinerary and get its full details, including
         /// the necessary deeplinks to actually make the booking.
         /// </summary>
         /// <param name="itinerary">The itinerary for which the booking details should be queried</param>
         /// <returns></returns>
-        public async Task<BookingResponse> QueryBooking(Itinerary itinerary)
+        public async Task<BookingResponse> QueryBooking(Itinerary itinerary,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var settings = new BookingQuerySettings(
                 new BookingRequestSettings(itinerary.FlightResponse.SessionKey, itinerary),
@@ -115,68 +120,74 @@ namespace SkyScanner.Services
             var bookingService = new Booking(_apiKey, settings);
             return await _executionStrategy.Execute(async () =>
             {
-                var pinger = await bookingService.SendQuery();
-                var response = await pinger.SendQuery();
+                var pinger = await bookingService.SendQuery(cancellationToken);
+                var response = await pinger.SendQuery(cancellationToken);
                 return response;
-            });
+            }, cancellationToken);
         }
 
-        internal async Task<List<TData>> QueryData<TService, TData>(TService service) where TService : Requester<List<TData>>
+        internal async Task<List<TData>> QueryData<TService, TData>(TService service,
+            CancellationToken cancellationToken) where TService : Requester<List<TData>>
         {
             return await _executionStrategy.Execute(async () =>
             {
-                var data = await service.SendQuery();
+                var data = await service.SendQuery(cancellationToken);
                 return data;
-            });
+            }, cancellationToken);
         }
 
         /// <summary>
         /// The locales service can be used to return the list of localizations supported by Skyscanner.
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Data.Locale>> QueryLocale()
+        public async Task<List<Data.Locale>> QueryLocale(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryData<Locale, Data.Locale>(new Locale(_apiKey));
+            return await QueryData<Locale, Data.Locale>(new Locale(_apiKey), cancellationToken);
         }
         /// <summary>
-        /// The location autosuggest service can be used to get a list of places (with corresponding IDs) that 
+        /// The location autosuggest service can be used to get a list of places (with corresponding IDs) that
         /// match the query string.
         /// </summary>
         /// <param name="query">Query string to search for</param>
         /// <returns></returns>
-        public async Task<List<Location>> QueryLocation(string query)
+        public async Task<List<Location>> QueryLocation(string query,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryData<LocationAutosuggest, Location>(new LocationAutosuggest(_apiKey, 
-                new LocationAutosuggestSettings(query)));
+            return await QueryData<LocationAutosuggest, Location>(new LocationAutosuggest(_apiKey,
+                new LocationAutosuggestSettings(query)), cancellationToken);
         }
         /// <summary>
-        /// The location autosuggest service can be used to get a list of places (with corresponding IDs) that 
-        /// match the query string. Or to get information about a specific place given it's ID (for example 
+        /// The location autosuggest service can be used to get a list of places (with corresponding IDs) that
+        /// match the query string. Or to get information about a specific place given it's ID (for example
         /// city name and country name for an airport)
         /// </summary>
         /// <param name="settings">Settings for the query</param>
         /// <returns></returns>
-        public async Task<List<Location>> QueryLocation(LocationAutosuggestSettings settings)
+        public async Task<List<Location>> QueryLocation(LocationAutosuggestSettings settings,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryData<LocationAutosuggest, Location>(new LocationAutosuggest(_apiKey, settings));
+            return await QueryData<LocationAutosuggest, Location>(
+                new LocationAutosuggest(_apiKey, settings), cancellationToken);
         }
         /// <summary>
         /// The markets service can be used to return the list of markets (countries) supported by Skyscanner.
         /// </summary>
         /// <param name="locale">Selected language</param>
         /// <returns></returns>
-        public async Task<List<Data.Market>> QueryMarket(Data.Locale locale)
+        public async Task<List<Data.Market>> QueryMarket(Data.Locale locale,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryData<Market, Data.Market>(new Market(_apiKey, locale));
+            return await QueryData<Market, Data.Market>(new Market(_apiKey, locale), cancellationToken);
         }
         /// <summary>
-        /// The currency service can be used to get the list of valid currencies supported by Skyscanner, 
+        /// The currency service can be used to get the list of valid currencies supported by Skyscanner,
         /// with additional information about how to display them.
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Data.Currency>> QueryCurrency()
+        public async Task<List<Data.Currency>> QueryCurrency(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await QueryData<Currency, Data.Currency>(new Currency(_apiKey));
+            return await QueryData<Currency, Data.Currency>(new Currency(_apiKey), cancellationToken);
         }
     }
 }

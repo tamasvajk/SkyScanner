@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using NodaTime;
 using SkyScanner.Services.Base;
+using System.Threading;
 
 namespace SkyScanner.Settings
 {
@@ -13,7 +14,7 @@ namespace SkyScanner.Settings
     public class RetryExecutionStrategy : IExecutionStrategy
     {
         /// <summary>
-        /// An initialized RetryExecutionStrategy with 1 second retry delay, and 2 retries on 
+        /// An initialized RetryExecutionStrategy with 1 second retry delay, and 2 retries on
         /// unexpected exceptions
         /// </summary>
         public static readonly RetryExecutionStrategy Default = new RetryExecutionStrategy(Duration.FromSeconds(1));
@@ -32,9 +33,11 @@ namespace SkyScanner.Settings
             _retryCountOnException = retryCountOnException;
         }
 
-        public async Task<T> Execute<T>(Func<Task<T>> func)
+        public async Task<T> Execute<T>(Func<Task<T>> func,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await Retry.Do<T, Exception>(func, _retryInterval, _retryCountOnException);
+            return await Retry.Do<T, Exception>(func, _retryInterval, _retryCountOnException, 
+                cancellationToken: cancellationToken);
         }
     }
 }

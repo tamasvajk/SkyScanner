@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using SkyScanner.Data.Base;
 using SkyScanner.Exceptions;
 using SkyScanner.Settings.Base;
+using System.Threading;
 
 namespace SkyScanner.Services.Base
 {
@@ -25,7 +26,9 @@ namespace SkyScanner.Services.Base
             _queryRequestSettings.Add("apiKey", ApiKey);
         }
 
-        protected override async Task<ResponsePinger<TResponse>> HandleResponse(HttpResponseMessage httpResponseMessage)
+        protected override async Task<ResponsePinger<TResponse>> HandleResponse(
+            HttpResponseMessage httpResponseMessage,
+            CancellationToken cancellationToken)
         {
             switch (httpResponseMessage.StatusCode)
             {
@@ -35,7 +38,7 @@ namespace SkyScanner.Services.Base
                 case HttpStatusCode.NoContent:
                     throw new RetryRequestException();
                 default:
-                    return await base.HandleResponse(httpResponseMessage);
+                    return await base.HandleResponse(httpResponseMessage, cancellationToken);
             }
         }
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkyScanner.Data;
+using System.Threading;
+using System;
 
 namespace SkyScanner.Test
 {
@@ -22,6 +24,30 @@ namespace SkyScanner.Test
             var currencies = await Scanner.QueryCurrency();
             Assert.IsNotNull(currencies);
             Assert.AreNotEqual(0, currencies.Count);
+        }
+
+        [TestMethod]
+        public async Task Currency_Query_Can_Be_Cancelled()
+        {
+            using (var tokenSource = new CancellationTokenSource())
+            {
+                var token = tokenSource.Token;
+
+                try
+                {
+                    tokenSource.Cancel();
+                    await Scanner.QueryCurrency(token);
+                    Assert.Fail();
+                }
+                catch (OperationCanceledException exc)
+                {
+                    Assert.AreEqual(token, exc.CancellationToken);
+                }
+                catch (Exception)
+                {
+                    Assert.Fail();
+                }
+            }
         }
 
         [TestMethod]

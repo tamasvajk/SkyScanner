@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SkyScanner.Flight;
 using SkyScanner.Services.Base;
 using SkyScanner.Settings;
+using System.Threading;
 
 namespace SkyScanner.Services
 {
@@ -19,13 +20,13 @@ namespace SkyScanner.Services
             _querySettings = querySettings;
         }
         
-        protected override Func<HttpClient, Task<HttpResponseMessage>> HttpMethod
+        protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
             get
             {
-                return client =>
+                return (client, token) =>
                     client.PostAsync("http://partners.api.skyscanner.net/apiservices/pricing/v1.0/",
-                        GetFormContent());
+                        GetFormContent(), token);
             }
         }
         

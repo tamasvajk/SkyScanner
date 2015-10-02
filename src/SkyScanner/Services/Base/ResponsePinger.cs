@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using SkyScanner.Data.Base;
 using SkyScanner.Exceptions;
 using SkyScanner.Settings.Base;
+using System.Threading;
 
 namespace SkyScanner.Services.Base
 {
@@ -20,12 +21,14 @@ namespace SkyScanner.Services.Base
         /// The OnInterimResultsRecieved fires when interim results become available from the SkyScanner API
         /// </summary>
         internal event EventHandler<TResponse> OnInterimResultsRecieved;
-        
+
         protected ResponsePinger(string apiKey) : base(apiKey, 1000)
         {
         }
 
-        protected override async Task<TResponse> HandleResponse(HttpResponseMessage httpResponseMessage)
+        protected override async Task<TResponse> HandleResponse(
+            HttpResponseMessage httpResponseMessage,
+            CancellationToken cancellationToken)
         {
             switch (httpResponseMessage.StatusCode)
             {
@@ -37,7 +40,7 @@ namespace SkyScanner.Services.Base
                     this.OnInterimResultsRecieved?.Invoke(this, response);
 
                     if (response.Succeeded)
-                    {                        
+                    {
                         return response;
                     }
 
@@ -50,7 +53,7 @@ namespace SkyScanner.Services.Base
                     {
                         throw new RetryResponsePingException();
                     }
-                    return await base.HandleResponse(httpResponseMessage);
+                    return await base.HandleResponse(httpResponseMessage, cancellationToken);
             }
         }
 
@@ -72,5 +75,5 @@ namespace SkyScanner.Services.Base
         }
     }
 
-    
+
 }

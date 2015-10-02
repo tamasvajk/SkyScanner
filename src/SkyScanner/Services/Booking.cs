@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SkyScanner.Booking;
 using SkyScanner.Services.Base;
 using SkyScanner.Settings;
+using System.Threading;
 
 namespace SkyScanner.Services
 {
@@ -19,13 +20,13 @@ namespace SkyScanner.Services
             _querySettings = querySettings;
         }
         
-        protected override Func<HttpClient, Task<HttpResponseMessage>> HttpMethod
+        protected override Func<HttpClient, CancellationToken, Task<HttpResponseMessage>> HttpMethod
         {
             get
             {
-                return client =>
+                return (client, token) =>
                     client.PutAsync(
-                        $"http://partners.api.skyscanner.net/apiservices/pricing/v1.0/{_querySettings.BookingRequest.SessionKey}/booking", GetFormContent());
+                        $"http://partners.api.skyscanner.net/apiservices/pricing/v1.0/{_querySettings.BookingRequest.SessionKey}/booking", GetFormContent(), token);
             }
         }
 

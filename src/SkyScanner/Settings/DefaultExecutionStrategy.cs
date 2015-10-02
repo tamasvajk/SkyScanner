@@ -1,6 +1,7 @@
 // Copyright (c) 2015 Tamas Vajk. All Rights Reserved. Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SkyScanner.Settings
@@ -10,7 +11,8 @@ namespace SkyScanner.Settings
     /// </summary>
     public class DefaultExecutionStrategy : IExecutionStrategy
     {
-        public async Task<T> Execute<T>(Func<Task<T>> func)
+        public async Task<T> Execute<T>(Func<Task<T>> func, 
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             return await func();
         }

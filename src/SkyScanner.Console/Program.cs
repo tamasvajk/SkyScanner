@@ -63,7 +63,7 @@ namespace SkyScanner.Console
             WriteSeparator();
 
             //Query bookings (note, this is forbidden by SkyScanner, should only query exact booking details if a user requests them)
-            var bookingQueryTasks = itineraries.Select(scanner.QueryBooking);
+            var bookingQueryTasks = itineraries.Select(i => scanner.QueryBooking(i));
             var bookingResults = (await Task.WhenAll(bookingQueryTasks))
                 .OrderBy(response =>
                     response.BookingOptions
@@ -183,7 +183,7 @@ namespace SkyScanner.Console
             WriteLine("----------------------------------------------");
 
             //Query bookings (note, this is forbidden by SkyScanner, should only query exact booking details if a user requests them)
-            var bookingQueryTasks = itineraries.Select(scanner.QueryBooking);
+            var bookingQueryTasks = itineraries.Select(i => scanner.QueryBooking(i));
             var bookingResults = (await Task.WhenAll(bookingQueryTasks))
                 .OrderBy(response =>
                     response.BookingOptions

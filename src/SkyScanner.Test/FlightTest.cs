@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using SkyScanner.Data;
 using SkyScanner.Settings;
+using System.Threading;
 
 namespace SkyScanner.Test
 {
@@ -33,6 +34,39 @@ namespace SkyScanner.Test
                 new FlightResponseSettings()));
 
             Assert.AreNotEqual(0, itineraries.Count);
+        }
+
+        [TestMethod]
+        public async Task Flight_Query_Can_Be_Cancelled()
+        {
+            using (var tokenSource = new CancellationTokenSource())
+            {
+                var token = tokenSource.Token;
+
+                try
+                {
+                    tokenSource.Cancel();
+
+                    var departureDate = Instant.FromDateTimeUtc(DateTime.UtcNow).InUtc().Date.PlusMonths(1);
+
+                    await Scanner.QueryFlight(new FlightQuerySettings(
+                        new FlightRequestSettings(
+                            Location.FromString("LOND-sky"),
+                            Location.FromString("NYCA-sky"),
+                            departureDate, departureDate.PlusDays(5)),
+                        new FlightResponseSettings()), token);
+
+                    Assert.Fail();
+                }
+                catch (OperationCanceledException exc)
+                {
+                    Assert.AreEqual(token, exc.CancellationToken);
+                }
+                catch (Exception)
+                {
+                    Assert.Fail();
+                }
+            }
         }
 
         [TestMethod]
@@ -177,13 +211,13 @@ namespace SkyScanner.Test
 
                 Assert.AreEqual(departureDate, itinerary.OutboundLeg.DepartureTime.Date);
                 Assert.AreEqual(departureDate.PlusDays(5), itinerary.InboundLeg.DepartureTime.Date);
-                
+
                 Assert.IsTrue(itinerary.OutboundLeg.DepartureTime.TimeOfDay >= outboundDepartureStartTime);
                 Assert.IsTrue(itinerary.OutboundLeg.DepartureTime.TimeOfDay <= outboundDepartureEndTime);
 
                 Assert.IsTrue(itinerary.InboundLeg.DepartureTime.TimeOfDay >= inboundDepartureStartTime);
                 Assert.IsTrue(itinerary.InboundLeg.DepartureTime.TimeOfDay <= inboundDepartureEndTime);
-                
+
                 Assert.AreEqual(Directionality.Outbound, itinerary.OutboundLeg.Directionality);
                 Assert.AreEqual(Directionality.Inbound, itinerary.InboundLeg.Directionality);
 

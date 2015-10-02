@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using SkyScanner.Exceptions;
+using System.Threading;
 
 namespace SkyScanner.Services.Base
 {
@@ -15,7 +16,8 @@ namespace SkyScanner.Services.Base
         {
         }
 
-        protected override async Task<TResponse> HandleResponse(HttpResponseMessage httpResponseMessage)
+        protected override async Task<TResponse> HandleResponse(HttpResponseMessage httpResponseMessage, 
+            CancellationToken cancellationToken)
         {
             switch (httpResponseMessage.StatusCode)
             {
@@ -23,7 +25,7 @@ namespace SkyScanner.Services.Base
                     var content = await httpResponseMessage.Content.ReadAsStringAsync();
                     return CreateResponse(content);
                 default:
-                    return await base.HandleResponse(httpResponseMessage);
+                    return await base.HandleResponse(httpResponseMessage, cancellationToken);
             }
         }
         protected abstract TResponse CreateResponse(string content);
