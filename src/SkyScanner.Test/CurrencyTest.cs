@@ -60,14 +60,14 @@ namespace SkyScanner.Test
         [TestMethod]
         public async Task Currency_Formatter()
         {
-            Assert.AreEqual("£12.20", Currency.Default.FormatValue(12.2m));
+            Assert.AreEqual("£12.20", Currency.Default.FormatValue(12.2M));
 
             var currencies = await Scanner.QueryCurrency();
             var chf = currencies.Single(currency => currency.Code == "CHF");
-            Assert.AreEqual("CHF 12.20", chf.FormatValue(12.2m));
+            Assert.AreEqual("CHF 12.20", chf.FormatValue(12.2M));
 
             var gbp = currencies.Single(currency => currency.Code == "GBP");
-            Assert.AreEqual("£12.20", gbp.FormatValue(12.2m));
+            Assert.AreEqual("£12.20", gbp.FormatValue(12.2M));
         }
     }
 }

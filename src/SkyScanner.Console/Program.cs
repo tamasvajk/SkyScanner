@@ -209,7 +209,7 @@ namespace SkyScanner.Console
             }
             catch(Exception e)
             {
-                throw new InvalidDataException("The interim result contains legs that are NULL - this should not happen");
+                throw new InvalidDataException("The interim result contains legs that are NULL - this should not happen", e);
             }
 
             Debug.WriteLine($"Interim results recieved ! {list.All.Count()} "
