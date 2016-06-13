@@ -7,6 +7,6 @@ namespace SkyScanner.Data
         Flight,
         Rail, 
         Mixed,
-				Unknown
+        Unknown
     }
 }
