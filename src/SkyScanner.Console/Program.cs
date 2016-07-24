@@ -241,20 +241,16 @@ namespace SkyScanner.Console
 
         private static void WriteLegs(Itinerary itinerary)
         {
-            WriteLine("   outbound itinerary at {1} with {0} ({2}-{3}, {4} stop{5})",
+            WriteLine("   outbound itinerary at {1} with {0} ({2}-{3})",
                 string.Join(", ", itinerary.OutboundLeg.OperatingCarriers.Select(c => c.Name)),
                 itinerary.OutboundLeg.DepartureTime.TimeOfDay,
                 itinerary.OutboundLeg.Origin.Code,
-                itinerary.OutboundLeg.Destination.Code,
-                itinerary.OutboundLeg.Stops.Count,
-                itinerary.OutboundLeg.Stops.Count == 1 ? "" : "s");
-            WriteLine("   inbound itinerary at {1} with {0} ({2}-{3}, {4} stop{5})",
+                itinerary.OutboundLeg.Destination.Code);
+            WriteLine("   inbound itinerary at {1} with {0} ({2}-{3})",
                 string.Join(", ", itinerary.InboundLeg.OperatingCarriers.Select(c => c.Name)),
                 itinerary.InboundLeg.DepartureTime.TimeOfDay,
                 itinerary.InboundLeg.Origin.Code,
-                itinerary.InboundLeg.Destination.Code,
-                itinerary.InboundLeg.Stops.Count,
-                itinerary.InboundLeg.Stops.Count == 1 ? "" : "s");
+                itinerary.InboundLeg.Destination.Code);
         }
 
         #region Write helpers

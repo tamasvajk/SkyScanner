@@ -26,8 +26,8 @@ namespace SkyScanner.Data
         internal List<int> CarrierIds { get; set; }
         [JsonProperty("OperatingCarriers")]
         internal List<int> OperatingCarrierIds { get; set; }
-        [JsonProperty("Stops")]
-        internal List<int> StopIds { get; set; }
+        //[JsonProperty("Stops")]
+        //internal List<int> StopIds { get; set; }
         [JsonProperty("FlightNumbers")]
         public List<FlightInfo> FlightInfos { get; internal set; }
         private IContainerResponse _flightResponse;
@@ -81,10 +81,10 @@ namespace SkyScanner.Data
         {
             get { return FlightResponse.Places.FirstOrDefault(place => place.Id == DestinationStation); }
         }
-        [JsonIgnore]
-        public List<Place> Stops
-        {
-            get { return StopIds.Select(id => FlightResponse.Places.SingleOrDefault(pl => pl.Id == id)).ToList(); }
-        }
+        //[JsonIgnore]
+        //public List<Place> Stops
+        //{
+        //    get { return StopIds.Select(id => FlightResponse.Places.SingleOrDefault(pl => pl.Id == id)).ToList(); }
+        //}
     }
 }
