@@ -6,6 +6,7 @@ namespace SkyScanner.Data
     {
         Flight,
         Rail, 
-        Mixed
+        Mixed,
+        Unknown
     }
 }

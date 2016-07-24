@@ -296,5 +296,20 @@ namespace SkyScanner.Test
                 Assert.IsNotNull(segment.Flight.Carrier);
             }
         }
+
+        [TestMethod]
+        public async Task JourneyMode_Unknown_Support()
+        {
+            var departureDate = Instant.FromDateTimeUtc(DateTime.UtcNow).InUtc().Date.PlusMonths(1);
+
+            var itineraries = await Scanner.QueryFlight(new FlightQuerySettings(
+                new FlightRequestSettings(
+                    Location.FromString("SYD-sky"),
+                    Location.FromString("JNGO-sky"),
+                    departureDate, departureDate.PlusDays(5)),
+                new FlightResponseSettings()));
+
+            Assert.AreNotEqual(0, itineraries.Count);
+        }
     }
 }
