@@ -12,6 +12,6 @@ namespace SkyScanner.Test
         public void ScannerConstructor_ShouldThrowException_OnNullValueForApiKey()
         {
             var scanner = new Scanner(null);
-        }         
+        }
     }
 }

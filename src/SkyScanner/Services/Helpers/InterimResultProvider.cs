@@ -68,7 +68,7 @@ namespace SkyScanner.Services.Helpers
                     .ToList();
 
                 Debug.WriteLine(
-                    $"Diff found {additions.Count()} new and {updates.Count()} updated top level elements - "
+                    $"Diff found {additions.Count} new and {updates.Count} updated top level elements - "
                     + $"now at {newTopLevelElements.Count} top level elements");
 
                 var mergedTopLevelElements = newTopLevelElements
