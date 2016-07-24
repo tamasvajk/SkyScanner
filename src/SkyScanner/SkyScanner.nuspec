@@ -13,7 +13,7 @@
     <description>
       The Skyscanner API is composed of services that can be used either individually, to add travel search functionality to an existing product, or combined, to build a fully-fledged travel search product.
     </description>
-    <copyright>Copyright (c) 2015 Tamas Vajk</copyright>
+    <copyright>Copyright (c) 2015-2016 Tamas Vajk</copyright>
     <tags>SkyScanner flight search API booking price</tags>
 	<frameworkAssemblies>
       <frameworkAssembly assemblyName="System" />
